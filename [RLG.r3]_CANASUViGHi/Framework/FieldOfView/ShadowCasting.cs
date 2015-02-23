@@ -1,10 +1,6 @@
-﻿/*
+﻿/* *
  * Based on code found here: http://www.evilscience.co.uk/?p=225
- * 
- * 
- * */
-
-/*
+ *
  * Modifed by Shane Baker 2011
  * Fixed bugs, optimized by removing unnecessary exception handling
  * 
