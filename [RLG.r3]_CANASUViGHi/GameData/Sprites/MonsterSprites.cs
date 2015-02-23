@@ -21,21 +21,21 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
-    internal sealed class ActorSprites
+    internal sealed class MonsterSprites
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ActorSprites" /> class.
+        /// Initializes a new instance of the <see cref="MonsterSprites" /> class.
         /// Loads all actor sprites.
         /// </summary>
         /// <param name="content">MonoGame ContentManager.</param>
-        public ActorSprites(ContentManager content)
+        public MonsterSprites(ContentManager content)
         {
-            this.HumanM = content.Load<Texture2D>("tiles/player/base/human_m");
+            this.Rat = content.Load<Texture2D>("tiles/monster/animals/rat");
         }
 
         /// <summary>
-        /// Gets actor sprite human_m
+        /// Gets Rat sprite.
         /// </summary>
-        public Texture2D HumanM { get; private set; }
+        internal Texture2D Rat { get; private set; }
     }
 }

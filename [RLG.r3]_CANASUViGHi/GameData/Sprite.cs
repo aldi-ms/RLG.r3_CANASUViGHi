@@ -36,7 +36,7 @@ namespace RLG.R3_CANASUViGHi.GameData
         /// <summary>
         /// Gets loaded Actor sprites.
         /// </summary>
-        internal static ActorSprites Player { get; private set; }
+        internal static PlayerSprites Player { get; private set; }
 
         /// <summary>
         /// Gets loaded Floor sprites.
@@ -48,15 +48,17 @@ namespace RLG.R3_CANASUViGHi.GameData
         /// </summary>
         internal static WallSprites Wall { get; private set; }
 
+        internal static MonsterSprites Monster { get; private set; }
+
         /// <summary>
-        /// Static initializer for all sprites / textures.
+        /// Static initializer for loading all sprites / textures.
         /// </summary>
         /// <param name="content">MonoGame ContentManager.</param>
         internal static void LoadSprites(ContentManager content)
         {
             if (Player == null)
             {
-                Player = new ActorSprites(content);
+                Player = new PlayerSprites(content);
             }
 
             if (Floor == null)
@@ -67,6 +69,11 @@ namespace RLG.R3_CANASUViGHi.GameData
             if (Wall == null)
             {
                 Wall = new WallSprites(content);
+            }
+
+            if (Monster == null)
+            {
+                Monster = new MonsterSprites(content);
             }
         }
     }

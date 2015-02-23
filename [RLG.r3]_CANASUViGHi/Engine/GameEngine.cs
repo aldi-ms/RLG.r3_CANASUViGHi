@@ -32,7 +32,9 @@ namespace RLG.R3_CANASUViGHi.Engine
     /// </summary>
     public class GameEngine : Game
     {
-        private bool inGame = false;
+        private bool
+            inGame = false,
+            expectCommand = false;
 
         /// <summary>
         /// Screen resolution in pixels.
@@ -42,6 +44,11 @@ namespace RLG.R3_CANASUViGHi.Engine
         internal const int 
             ScreenWidth = 1024,
             ScreenHeight = 640;
+        
+        /// <summary>
+        /// The minimal energy cost for an Actor taking a turn.
+        /// </summary>
+        internal const int MinTurnCost = 100;
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -109,110 +116,167 @@ namespace RLG.R3_CANASUViGHi.Engine
         {
             this.keyboardBuffer.Update();
 
-            for (int i = 0; i < this.keyboardBuffer.KeyCount; i++)
+            #region Energy-Independent Commands
+            Keys key = this.keyboardBuffer.PopKey();
+            switch (key)
             {
-                switch (this.keyboardBuffer.PopFirstKey()) 
-                {
-                    case Keys.Escape:
-                        {
-                            this.Exit();
-                            break;
-                        }
-
-                    case Keys.Home:
-                        {
-                            this.NewGame();
-                            break;
-                        }
-
-                    case Keys.OemPlus:
-                        {
-                            Point nextPoint = new Point(
-                                this.testMap.ViewBoxTileSize.X + 1,
-                                this.testMap.ViewBoxTileSize.Y + 1
-                                );
-
-                            this.testMap.ViewBoxTileSize = nextPoint;
-                            break;
-                        }
-
-                    case Keys.OemMinus:
-                        {
-                            Point prevPoint = new Point(
-                                this.testMap.ViewBoxTileSize.X - 1,
-                                this.testMap.ViewBoxTileSize.Y - 1
-                                );
-
-                            this.testMap.ViewBoxTileSize = prevPoint;
-                            break;
-                        }
-
-                    #region Movement Keys
-
-                    case Keys.NumPad8:
-                    case Keys.K:
-                    case Keys.Up:
-                        {
-                            this.playerActor.Move(CardinalDirection.North);
-                            break;
-                        }
-
-                    case Keys.NumPad2:
-                    case Keys.J:
-                    case Keys.Down:
-                        {
-                            this.playerActor.Move(CardinalDirection.South);
-                            break;
-                        }
-
-                    case Keys.NumPad4:
-                    case Keys.H:
-                    case Keys.Left:
-                        {
-                            this.playerActor.Move(CardinalDirection.West);
-                            break;
-                        }
-
-                    case Keys.NumPad6:
-                    case Keys.L:
-                    case Keys.Right:
-                        {
-                            this.playerActor.Move(CardinalDirection.East);
-                            break;
-                        }
-
-                    case Keys.NumPad7:
-                    case Keys.Y:
-                        {
-                            this.playerActor.Move(CardinalDirection.NorthWest);
-                            break;
-                        }
-
-                    case Keys.NumPad9:
-                    case Keys.U:
-                        {
-                            this.playerActor.Move(CardinalDirection.NorthEast);
-                            break;
-                        }
-
-                    case Keys.NumPad1:
-                    case Keys.B:
-                        {
-                            this.playerActor.Move(CardinalDirection.SouthWest);
-                            break;
-                        }
-
-                    case Keys.NumPad3:
-                    case Keys.N:
-                        {
-                            this.playerActor.Move(CardinalDirection.SouthEast);
-                            break;
-                        }
-                    #endregion
-
-                    default:
-                        // Send message for unknown command?
+                case Keys.Escape:
+                    {
+                        // Exit the game.
+                        this.Exit();
                         break;
+                    }
+
+                case Keys.Home:
+                    {
+                        // Start a new game.
+                        this.NewGame();
+                        break;
+                    }
+
+                case Keys.OemPlus:
+                    {
+                        // Increase the play field (map-view-box size).
+                        Point nextPoint = new Point(
+                            this.testMap.ViewBoxTileSize.X + 1,
+                            this.testMap.ViewBoxTileSize.Y + 1
+                            );
+
+                        this.testMap.ViewBoxTileSize = nextPoint;
+                        break;
+                    }
+
+                case Keys.OemMinus:
+                    {
+                        // Reduce the play field (map-view-box size).
+                        Point prevPoint = new Point(
+                            this.testMap.ViewBoxTileSize.X - 1,
+                            this.testMap.ViewBoxTileSize.Y - 1
+                            );
+
+                        this.testMap.ViewBoxTileSize = prevPoint;
+                        break;
+                    }
+
+                case Keys.Q:
+                    {
+                        // Summon a monster on the field.
+                        IActor monster = Tools.GenerateMonster();
+                        monster.Spawn(this.testMap, Point.Zero);
+                        this.actorQueue.Add(monster);
+                        break;
+                    }
+
+                default:
+                    {
+                        // The key is not a energy-independent command,
+                        // return it to the buffer!
+                        this.keyboardBuffer.PushKey(key);
+                        break;
+                    }
+            }
+            #endregion
+
+            if (!expectCommand)
+            {
+                actorQueue.AccumulateEnergy();
+            }
+
+            foreach (IActor actor in actorQueue)
+            {
+                if (actor.Energy >= MinTurnCost)
+                {
+                    if (actor.Flags.HasFlag(Flags.IsPlayerControl))
+                    {
+                        // Actor is player controlled, wait for input command
+                        this.expectCommand = true;
+
+                        switch (this.keyboardBuffer.PopKey())
+                        {
+                            #region Energy-Dependent Commands
+                            case Keys.NumPad8:
+                            case Keys.K:
+                            case Keys.Up:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.North);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            case Keys.NumPad2:
+                            case Keys.J:
+                            case Keys.Down:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.South);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            case Keys.NumPad4:
+                            case Keys.H:
+                            case Keys.Left:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.West);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            case Keys.NumPad6:
+                            case Keys.L:
+                            case Keys.Right:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.East);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            case Keys.NumPad7:
+                            case Keys.Y:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.NorthWest);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            case Keys.NumPad9:
+                            case Keys.U:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.NorthEast);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            case Keys.NumPad1:
+                            case Keys.B:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.SouthWest);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            case Keys.NumPad3:
+                            case Keys.N:
+                                {
+                                    actor.Energy -= this.playerActor.Move(CardinalDirection.SouthEast);
+                                    this.expectCommand = false;
+                                    break;
+                                }
+
+                            default:
+                                // Send message for unknown command!
+                                break;
+                            #endregion
+                        }
+                    }
+                    else
+                    {
+                        if (!expectCommand)
+                        {
+                            // The Actor is non-player character.
+                            // AI to be implemented. . .
+                            actor.Energy -= actor.Move(Tools.DrunkardWalk());
+                        }
+                    }
                 }
             }
 
@@ -244,11 +308,10 @@ namespace RLG.R3_CANASUViGHi.Engine
                 playerName, 
                 0,
                 11, 
-                new Point(0, 0),
                 Sprite.Player.HumanM,
                 Enums.Flags.IsPlayerControl);
 
-            this.actorQueue.AddActor(playerActor);
+            this.actorQueue.Add(playerActor);
 
             this.testMap = new Map<ITile>(
                 Framework.Tools.GenerateMap(new Point(30, 30)),

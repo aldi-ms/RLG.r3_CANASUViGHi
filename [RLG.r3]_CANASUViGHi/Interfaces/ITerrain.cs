@@ -25,5 +25,10 @@ namespace RLG.R3_CANASUViGHi.Interfaces
     /// </summary>
     internal interface ITerrain : IDrawableObject
     {
+        /// <summary>
+        /// Gets or sets the cost for moving to a Tile with this Terrain.
+        /// </summary>
+        /// <remarks>Set to 0 for blocked terrain.</remarks>
+        int MovementCost { get; set; }
     }
 }

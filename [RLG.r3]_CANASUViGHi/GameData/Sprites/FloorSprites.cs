@@ -39,6 +39,6 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
         /// <summary>
         /// Gets floor sprite pebble_brown0.
         /// </summary>
-        public Texture2D PebbleBrown0 { get; private set; }
+        internal Texture2D PebbleBrown0 { get; private set; }
     }
 }

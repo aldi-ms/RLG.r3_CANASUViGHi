@@ -34,15 +34,23 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <param name="name">The name of the terrain.</param>
         /// <param name="texture">The texture representing the terrain.</param>
         /// <param name="flags">Terrain flags.</param>
-        public Terrain(int id, string name, Texture2D texture, Flags flags)
+        /// <param name="movementCost">The cost for moving on this Terrain.</param>
+        public Terrain(int id, string name, Texture2D texture, Flags flags, int movementCost)
             : base(id, name, flags)
         {
             this.Texture = texture;
+            this.MovementCost = movementCost;
         }
                 
         /// <summary>
         /// Gets the Texture2D of the Terrain.
         /// </summary>
         public Texture2D Texture { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the cost for moving to a Tile with this Terrain.
+        /// </summary>
+        /// <remarks>Set to 0 for blocked terrain.</remarks>
+        public int MovementCost { get; set; }
     }
 }

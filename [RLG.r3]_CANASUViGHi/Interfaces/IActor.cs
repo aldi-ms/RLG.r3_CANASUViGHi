@@ -46,8 +46,8 @@ namespace RLG.R3_CANASUViGHi.Interfaces
         /// Move the Actor in the specified direction.
         /// </summary>
         /// <param name="direction">One of the 8 directions.</param>
-        /// <returns>Indicates whether the move was successful.</returns>
-        bool Move(CardinalDirection direction);
+        /// <returns>Returns the cost of the move or 0 if unsuccessful.</returns>
+        int Move(CardinalDirection direction);
 
 
         /// <summary>

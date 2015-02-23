@@ -20,10 +20,11 @@ namespace RLG.R3_CANASUViGHi.Framework
 {
     using RLG.R3_CANASUViGHi.Interfaces;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
-    internal class PriorityQueue<T>
+    internal class PriorityQueue<T> : IEnumerable<T>
         where T : IActor
     {
         private List<T> actorList;
@@ -36,11 +37,21 @@ namespace RLG.R3_CANASUViGHi.Framework
             this.actorList = new List<T>();
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this.actorList.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
         /// <summary>
         /// Add an Actor the the PriorityQueue.
         /// </summary>
         /// <param name="actor">The Actor to add.</param>
-        internal void AddActor(T actor)
+        internal void Add(T actor)
         {
             this.actorList.Add(actor);
 
@@ -53,7 +64,7 @@ namespace RLG.R3_CANASUViGHi.Framework
         /// <param name="actor">The Actor to remove.</param>
         /// <returns>True if the Actor is successfully removed; otherwise false.
         /// <remarks>This method also returns false if the Actor was not found in the PriorityQueue.</remarks></returns>
-        internal bool RemoveActor(T actor)
+        internal bool Remove(T actor)
         {
             if (this.actorList.Remove(actor))
             {
@@ -65,7 +76,7 @@ namespace RLG.R3_CANASUViGHi.Framework
         }
 
         /// <summary>
-        /// Sums all Actors' energy by their speed.
+        /// Sums all Actors' energy with their speed.
         /// </summary>
         /// <remarks>Call each turn to make Actors accumulate energy.</remarks>
         internal void AccumulateEnergy()
@@ -78,6 +89,9 @@ namespace RLG.R3_CANASUViGHi.Framework
             SortList();
         }
 
+        /// <summary>
+        /// Sorts the list in descending order by Actor.Energy.
+        /// </summary>
         private void SortList()
         {
             actorList.Sort((x, y) => y.Energy.CompareTo(x.Energy));

@@ -54,9 +54,23 @@ namespace RLG.R3_CANASUViGHi.Framework
         /// Gets the first (top) key, and removes it from the buffer.
         /// </summary>
         /// <returns>The first <see cref="Keys"/> object in the buffer.</returns>
-        public Keys PopFirstKey()
+        public Keys PopKey()
         {
-            return this.buffer.Dequeue();
+            if (this.buffer.Count > 0)
+            {
+                return this.buffer.Dequeue();
+            }
+
+            return Keys.None;
+        }
+
+        /// <summary>
+        /// Push a key to the buffer manually.
+        /// </summary>
+        /// <param name="key">Key to push to the buffer.</param>
+        public void PushKey(Keys key)
+        {
+            this.buffer.Enqueue(key);
         }
         
         /// <summary>

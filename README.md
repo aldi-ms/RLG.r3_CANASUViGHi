@@ -8,4 +8,4 @@ You can download the full pack of tiles (which are under the CC0 License) I am c
 In order to build the project, unzip the folder "tiles/" in the project folder "Content/".
 
 Unless otherwise noted the source files are under the GNU GENERAL PUBLIC LICENSE, Version 3
-(a copy of which is provided in the project, see LICENSE.txt).
+(a copy of which is provided in the project, see COPYING.txt).

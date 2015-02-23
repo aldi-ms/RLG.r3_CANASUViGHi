@@ -194,20 +194,21 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <returns>True if the tile is a valid destination Tile, otherwise false.</returns>
         public bool CheckTile(Point p)
         {
-            // Return false if the coordinates are out if map-bounds.
+            // Check if the coordinates are out if map-bounds.
             if (p.X < 0 || p.X >= this.Tiles.Width ||
                 p.Y < 0 || p.Y >= this.Tiles.Height)
             {
                 return false;
             }
 
-            // Return false if the tile is blocked.
-            if (this[p].Flags.HasFlag(Flags.IsBlocked))
+            // Check if the tile is blocked.
+            if (this[p].Flags.HasFlag(Flags.IsBlocked) || 
+                this[p].Terrain.MovementCost <= 0)
             {
                 return false;
             }
 
-            // Redundant check? In that case Tile should have IsBlocked flag!
+            // Redundant check? In that case Tile should have IsBlocked flag?
             if (this[p].Actor != null)
             {
                 return false;

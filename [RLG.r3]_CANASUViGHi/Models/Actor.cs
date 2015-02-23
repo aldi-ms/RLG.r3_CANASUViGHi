@@ -41,16 +41,15 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <param name="speed">The Actor speed.</param>
         /// <param name="position">Position of the Actor.</param>
         /// <param name="texture">The texture representing the Actor.</param>
-        /// <param name="flags">Actor Flags.</param>
+        /// <param name="flags">Actor Flags. <remarks>Flags.IsBlocked is
+        /// automatically raised for an Actor.</remarks></param>
         public Actor(
-            int id, string name, int energy, int speed, 
-            Point position, Texture2D texture, Flags flags
-            )
-            : base(id, name, flags)
+            int id, string name, int energy, int speed,
+            Texture2D texture, Flags flags)
+            : base(id, name, flags |= Flags.IsBlocked)
         {
             this.Energy = energy;
             this.Speed = speed;
-            this.Position = position;
             this.Texture = texture;
         }
 
@@ -107,8 +106,8 @@ namespace RLG.R3_CANASUViGHi.Models
         /// Move the Actor in the specified direction.
         /// </summary>
         /// <param name="direction">The cardinal directions of the move.</param>
-        /// <returns>Indicates whether the move was successful.</returns>
-        public bool Move(CardinalDirection direction)
+        /// <returns>Returns the cost of the move or 0 if unsuccessful.</returns>
+        public int Move(CardinalDirection direction)
         {
             if (this.map == null)
             {
@@ -125,10 +124,11 @@ namespace RLG.R3_CANASUViGHi.Models
                 this.map[newPosition].Actor = this;
                 this.Position = newPosition;
 
-                return true;
+                return this.map[this.Position].Terrain.MovementCost;
             }
 
-            return false;
+            // Unsuccessful move, return 0.
+            return 0;
         }
     }
 }

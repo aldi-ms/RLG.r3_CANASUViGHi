@@ -51,8 +51,8 @@ namespace RLG.R3_CANASUViGHi.Framework
         /// elements.</returns>
         public static FlatArray<ITile> GenerateMap(Point size)
         {
-            Terrain nonBlockedTerrain = new Terrain(0, "pebble", Sprite.Floor.PebbleBrown0, Flags.None);
-            Terrain blockedTerrain = new Terrain(1, "wall", Sprite.Wall.BrickBrown0, Flags.IsBlocked);
+            Terrain nonBlockedTerrain = new Terrain(0, "pebble", Sprite.Floor.PebbleBrown0, Flags.None, 20);
+            Terrain blockedTerrain = new Terrain(1, "wall", Sprite.Wall.BrickBrown0, Flags.IsBlocked, -1);
 
             FlatArray<ITile> resultTiles = new FlatArray<ITile>(size.X, size.Y);
 
@@ -60,7 +60,7 @@ namespace RLG.R3_CANASUViGHi.Framework
             {
                 for (int y = 0; y < size.Y; y++)
                 {
-                    if (RNG.Next(0, 10) > 3)
+                    if (RNG.Next(0, 10) > 2)
                     {
                         resultTiles[x, y] = new Tile(nonBlockedTerrain, 0, 0, null);
                     }
@@ -72,6 +72,25 @@ namespace RLG.R3_CANASUViGHi.Framework
             }
 
             return resultTiles;
+        }
+
+        /// <summary>
+        /// For non-player controlled Actors, testing only!
+        /// </summary>
+        /// <returns>Random Cardinal Direction.</returns>
+        public static CardinalDirection DrunkardWalk()
+        {
+            return (CardinalDirection)RNG.Next(0, 8);
+        }
+
+        //// Randomize monster generation.
+        /// <summary>
+        /// Generate a (test-case) monster.
+        /// </summary>
+        /// <returns>An object implementing IActor.</returns>
+        public static IActor GenerateMonster()
+        {
+            return new Actor(1, "bot", 0, 8, Sprite.Monster.Rat, Flags.None);
         }
     }
 }
