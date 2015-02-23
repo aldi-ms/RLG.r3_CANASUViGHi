@@ -49,6 +49,11 @@ namespace RLG.R3_CANASUViGHi.Interfaces
         /// <summary>
         /// Gets the (cumulative from other elements) Tile Flags.
         /// </summary>
-        Flags Flags { get; }
+        Flags Flags { get; set; }
+
+        /// <summary>
+        /// Clears the Tile specific tags, and only them.
+        /// </summary>
+        void ClearFlags();
     }
 }

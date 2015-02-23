@@ -96,6 +96,22 @@ namespace RLG.R3_CANASUViGHi.Models
         }
 
         /// <summary>
+        /// Clears the Tile specific tags, and only them.
+        /// </summary>
+        public void ClearFlags()
+        {
+            if (this.Flags.HasFlag(Flags.HasBeenSeen))
+            {
+                this.Flags = Flags.None;
+                this.Flags = Flags.HasBeenSeen;
+            }
+            else
+            {
+                this.Flags = Flags.None;
+            }
+        }
+
+        /// <summary>
         /// Gets the Tile Flags.
         /// </summary>
         public Flags Flags
@@ -113,7 +129,7 @@ namespace RLG.R3_CANASUViGHi.Models
                 }
             }
 
-            private set 
+            set 
             {
                 this.flags = value;
             }

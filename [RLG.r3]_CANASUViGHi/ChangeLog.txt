@@ -1,31 +1,37 @@
 ﻿*
-* Intended for keeping track of changes in RLG.r3_CANASUViGHi project
-*
+* Log keeping track of changes in RLG.r3_CANASUViGHi project
+* * * * *
 
 23.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * First commit of the started before several days project based on
-an older project -MonoGame_RLG.Revival-CANASUViGHi.
+ an older project -MonoGame_RLG.Revival-CANASUViGHi.
 
 * Implemented IEnumerable<T> for the PriorityQueue class, to iterate
-over the contained actor list.
+ over the contained actor list.
 
 * Implemented the class PriorityQueue for objects implementing IActor 
-in the GameEngine, to keep track of all actors on the map, and giving 
-them option to act according to their energy value. [Turn system]
+ in the GameEngine, to keep track of all actors on the map, and giving 
+ them option to act according to their energy value. [Turn system]
 
 * Added method PushKey(Keys key) to the KeyboardBuffer class, to
-return keys that were not processed currently, otherwise they are lost.
+ return keys that were not processed currently, otherwise they are lost.
 
 * Added property int MovementCost to ITerrain, to show the cost for 
-moving into a certain terrain type.
+ moving into a certain terrain type.
 
 * Added class MonsterSprites to keep all loaded monster sprites, and
-created a reference to it in the Sprite class.
+ created a reference to it in the Sprite class.
 
 * Return type of method Move(CardinalDirection direction) in IActor
  changed to int, to show the cost of the move made. Returns 0 if the
  move was unsuccessful.
 
 * Creating a object of type Actor now automatically raises the 
-Flag.IsBlocked for the Actor created.
+ Flag.IsBlocked for the Actor created.
+
+* Implemented Field of View calculation for the Map.
+	- Spawning NPCs do not work for some reason. -
+	+ Issue was incorrectly assigning and keeping Flags to a Tile in
+	which a Actor has been. Working correctly now by clearing the Tile
+	Flags we do not need. +

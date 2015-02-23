@@ -51,7 +51,7 @@ namespace RLG.R3_CANASUViGHi.Framework
         /// elements.</returns>
         public static FlatArray<ITile> GenerateMap(Point size)
         {
-            Terrain nonBlockedTerrain = new Terrain(0, "pebble", Sprite.Floor.PebbleBrown0, Flags.None, 20);
+            Terrain nonBlockedTerrain = new Terrain(0, "pebble", Sprite.Floor.PebbleBrown0, Flags.IsTransparent, 20);
             Terrain blockedTerrain = new Terrain(1, "wall", Sprite.Wall.BrickBrown0, Flags.IsBlocked, -1);
 
             FlatArray<ITile> resultTiles = new FlatArray<ITile>(size.X, size.Y);

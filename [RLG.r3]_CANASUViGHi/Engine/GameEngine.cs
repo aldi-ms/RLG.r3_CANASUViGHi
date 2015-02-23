@@ -162,8 +162,8 @@ namespace RLG.R3_CANASUViGHi.Engine
                     {
                         // Summon a monster on the field.
                         IActor monster = Tools.GenerateMonster();
-                        monster.Spawn(this.testMap, Point.Zero);
                         this.actorQueue.Add(monster);
+                        monster.Spawn(this.testMap, Point.Zero);
                         break;
                     }
 
@@ -182,6 +182,7 @@ namespace RLG.R3_CANASUViGHi.Engine
                 actorQueue.AccumulateEnergy();
             }
 
+            
             foreach (IActor actor in actorQueue)
             {
                 if (actor.Energy >= MinTurnCost)
@@ -289,7 +290,7 @@ namespace RLG.R3_CANASUViGHi.Engine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             if (inGame)
             {

@@ -46,7 +46,7 @@ namespace RLG.R3_CANASUViGHi.Models
         public Actor(
             int id, string name, int energy, int speed,
             Texture2D texture, Flags flags)
-            : base(id, name, flags |= Flags.IsBlocked)
+            : base(id, name, flags |= (Flags.IsBlocked | Flags.IsTransparent))
         {
             this.Energy = energy;
             this.Speed = speed;
@@ -121,6 +121,7 @@ namespace RLG.R3_CANASUViGHi.Models
             if (this.map.CheckTile(newPosition))
             {
                 this.map[this.Position].Actor = null;
+                this.map[this.Position].ClearFlags();
                 this.map[newPosition].Actor = this;
                 this.Position = newPosition;
 

@@ -22,6 +22,7 @@ namespace RLG.R3_CANASUViGHi.Models
     using Microsoft.Xna.Framework.Graphics;
     using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Framework;
+    using RLG.R3_CANASUViGHi.Framework.FieldOfView;
     using RLG.R3_CANASUViGHi.GameData;
     using RLG.R3_CANASUViGHi.Interfaces;
     using System;
@@ -34,6 +35,7 @@ namespace RLG.R3_CANASUViGHi.Models
         where T : ITile
     {
         private Point viewBoxTileSize;
+        private FieldOfView<T> fieldOfView;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Map" /> class.
@@ -49,6 +51,7 @@ namespace RLG.R3_CANASUViGHi.Models
         {
             this.Tiles = tiles;
             this.ViewBoxTileSize = viewBoxTileSize;
+            this.fieldOfView = new FieldOfView<T>(this.Tiles);
         }
 
         /// <summary>
@@ -120,6 +123,8 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <param name="center">Center the screen around this point.</param>
         public void Draw(SpriteBatch spriteBatch, Point center)
         {
+            this.fieldOfView.ComputeFov(center.X, center.Y, 5, true, FOVMethod.MRPAS);
+
             spriteBatch.Begin();
 
             // Get the start (Tile)coordinates  for the Map
@@ -142,6 +147,7 @@ namespace RLG.R3_CANASUViGHi.Models
             {
                 startTile.X = this.Tiles.Height - this.ViewBoxTileSize.X;
             }
+
             if (startTile.Y + this.ViewBoxTileSize.Y >= this.Tiles.Width)
             {
                 startTile.Y = this.Tiles.Width - this.ViewBoxTileSize.Y;
@@ -154,9 +160,9 @@ namespace RLG.R3_CANASUViGHi.Models
                     Vector2 drawPosition = new Vector2(10 + (Sprite.TileSize * x), 10 + (Sprite.TileSize * y));
                     Point tile = new Point(startTile.X + x, startTile.Y + y);
 
-                    //if (this[tile].IsVisible)
-                    if (true)
+                    if (this[tile].IsVisible)
                     {
+                        this[tile].Flags |= Flags.HasBeenSeen;
                         // Draw the Terrain first as it exists for every Tile.
                         spriteBatch.Draw(this[tile].Terrain.Texture, drawPosition);
 
