@@ -1,4 +1,4 @@
-# RLG.r3_CANASUViGHi (Canas Uvighi
+# RLG.r3_CANASUViGHi (Canas Uvighi)
 
 A third revisit of my RogueLike/RPG Game project.
 
