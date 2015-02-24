@@ -37,6 +37,7 @@ namespace RLG.R3_CANASUViGHi.Models
         /// Initializes a new instance of the <see cref="Actor" /> class.
         /// </summary>
         /// <param name="id">The ID of the Actor.</param>
+        /// <param name="name">Name of the Actor.</param>
         /// <param name="energy">The Actor energy.</param>
         /// <param name="speed">The Actor speed.</param>
         /// <param name="position">Position of the Actor.</param>
@@ -44,9 +45,13 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <param name="flags">Actor Flags. <remarks>Flags.IsBlocked is
         /// automatically raised for an Actor.</remarks></param>
         public Actor(
-            int id, string name, int energy, int speed,
-            Texture2D texture, Flags flags)
-            : base(id, name, flags |= (Flags.IsBlocked | Flags.IsTransparent))
+            int id, 
+            string name,
+            int energy,
+            int speed, 
+            Texture2D texture, 
+            Flags flags)
+            : base(id, name, flags |= Flags.IsBlocked)
         {
             this.Energy = energy;
             this.Speed = speed;

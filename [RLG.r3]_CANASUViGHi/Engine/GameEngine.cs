@@ -56,6 +56,8 @@ namespace RLG.R3_CANASUViGHi.Engine
         private Map<ITile> testMap;
         private IActor playerActor;
         private PriorityQueue<IActor> actorQueue;
+        private IMessageLog messageLog;
+        private SpriteFont testFont;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine" /> class.
@@ -95,6 +97,8 @@ namespace RLG.R3_CANASUViGHi.Engine
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            this.testFont = Content.Load<SpriteFont>("Fonts/Consolas16");
 
             // Load all needed sprites.
             Sprite.LoadSprites(this.Content);
@@ -162,8 +166,10 @@ namespace RLG.R3_CANASUViGHi.Engine
                     {
                         // Summon a monster on the field.
                         IActor monster = Tools.GenerateMonster();
-                        this.actorQueue.Add(monster);
-                        monster.Spawn(this.testMap, Point.Zero);
+                        if (monster.Spawn(this.testMap, new Point(5, 5)))
+                        {
+                            this.actorQueue.Add(monster);
+                        }
                         break;
                     }
 

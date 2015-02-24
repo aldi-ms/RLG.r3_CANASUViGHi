@@ -60,7 +60,7 @@ namespace RLG.R3_CANASUViGHi.Framework
             {
                 for (int y = 0; y < size.Y; y++)
                 {
-                    if (RNG.Next(0, 10) > 2)
+                    if (RNG.Next(0, 10) > 1)
                     {
                         resultTiles[x, y] = new Tile(nonBlockedTerrain, 0, 0, null);
                     }

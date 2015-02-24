@@ -2,6 +2,11 @@
 * Log keeping track of changes in RLG.r3_CANASUViGHi project
 * * * * *
 
+24.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+
+* Created an interface IMessageLog to use to draw and keep string
+ messages. class MessageLog implements the interface.
+
 23.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * First commit of the started before several days project based on

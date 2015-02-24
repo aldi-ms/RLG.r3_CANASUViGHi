@@ -48,8 +48,7 @@ namespace RLG.R3_CANASUViGHi.Interfaces
         /// <param name="direction">One of the 8 directions.</param>
         /// <returns>Returns the cost of the move or 0 if unsuccessful.</returns>
         int Move(CardinalDirection direction);
-
-
+        
         /// <summary>
         /// Spawn the actor on the indicated map and coordinates.
         /// </summary>

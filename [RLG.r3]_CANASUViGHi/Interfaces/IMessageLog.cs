@@ -18,42 +18,29 @@
 
 namespace RLG.R3_CANASUViGHi.Interfaces
 {
-    using RLG.R3_CANASUViGHi.Framework.FieldOfView;
-    using RLG.R3_CANASUViGHi.Enums;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+    using RLG.R3_CANASUViGHi.Framework;
 
-    /// <summary>
-    /// Interface for the Game Tile.
-    /// </summary>
-    internal interface ITile : IFovCell
+    internal interface IMessageLog
     {
         /// <summary>
-        /// Gets or sets the Terrain ID of the Tile.
+        /// Gets or sets the color of the text in the log.
         /// </summary>
-        ITerrain Terrain { get; set; }
+        Color TextColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the Fringe element ID of the Tile.
+        /// Send a message to the log to be displayed.
         /// </summary>
-        int Fringe { get; set; }
+        /// <param name="text">String text message.</param>
+        /// <param name="color">The color to display the message.</param>
+        /// <returns>Indicates whether the message was successfuly shown.</returns>
+        bool SendMessage(string text);
 
         /// <summary>
-        /// Gets or sets the Item List ID of the Tile.
+        /// Clear the log.
         /// </summary>
-        int ItemList { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Actor of the Tile.
-        /// </summary>
-        IActor Actor { get; set; }
-
-        /// <summary>
-        /// Gets the (cumulative from other elements) Tile Flags.
-        /// </summary>
-        Flags Flags { get; set; }
-
-        /// <summary>
-        /// Clears the Tile specific Flags, and only them.
-        /// </summary>
-        void ClearFlags();
+        void ClearLog();
     }
 }

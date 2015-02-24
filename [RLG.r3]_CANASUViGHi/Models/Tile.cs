@@ -96,7 +96,7 @@ namespace RLG.R3_CANASUViGHi.Models
         }
 
         /// <summary>
-        /// Clears the Tile specific tags, and only them.
+        /// Clears the Tile specific Flags, and only them.
         /// </summary>
         public void ClearFlags()
         {
@@ -118,7 +118,7 @@ namespace RLG.R3_CANASUViGHi.Models
         {
             get
             {
-                // cumulative from terrain, gameobj, itemlist, unit Flags?
+                // cumulative from terrain, gameobj, itemlist & actor Flags
                 if (this.Actor != null)
                 {
                     return this.flags | this.Terrain.Flags | this.Actor.Flags;
