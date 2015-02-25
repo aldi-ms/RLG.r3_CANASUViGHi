@@ -355,17 +355,6 @@ namespace RLG.R3_CANASUViGHi.Engine
                 if (outerBreak) { break; }
             }
 
-            string greeting = string.Format(
-                "~w{0}!Message ~W{1}!log ~l{2}!i~l{3}!n~s{4}!itialized. ~s{5}!Greetings!",
-                Color.CornflowerBlue.ToUInt(),
-                Color.Crimson.ToUInt(),
-                Color.White.ToUInt(),
-                Color.BurlyWood.ToUInt(),
-                Color.LawnGreen.ToUInt(),
-                Color.LightGreen.ToUInt());
-            
-            this.messageLog.SendMessage(greeting);
-
             // Indicate that we are currently in game.
             inGame = true;
         }

@@ -33,7 +33,7 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <param name="soundType">Type of sound.</param>
         /// <param name="sound">Sound string representation.</param>
         public Sound(
-            ISoundSourceObject<IGameObject> sourceObject,
+            ISoundSourceObject sourceObject,
             SoundType soundType,
             string sound)
         {
@@ -45,7 +45,7 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <summary>
         /// Gets the sound source.
         /// </summary>
-        public ISoundSourceObject<IGameObject> Source { get; private set; }
+        public ISoundSourceObject Source { get; private set; }
 
         /// <summary>
         /// Gets the sound type.

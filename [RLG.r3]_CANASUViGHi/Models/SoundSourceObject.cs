@@ -26,7 +26,7 @@ namespace RLG.R3_CANASUViGHi.Models
     /// Abstract class implementing <see cref="GameObject"/> and <see cref="ISoundSourceObject<IGameObject"/>,
     /// base for game objects that can make sounds.
     /// </summary>
-    internal abstract class SoundSourceObject : GameObject, ISoundSourceObject<IGameObject>
+    internal abstract class SoundSourceObject : GameObject, ISoundSourceObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundSourceObject" /> class.

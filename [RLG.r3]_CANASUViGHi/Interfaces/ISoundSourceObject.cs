@@ -25,8 +25,7 @@ namespace RLG.R3_CANASUViGHi.Interfaces
     /// </summary>
     /// <typeparam name="T">Type of object, which should implement
     /// <see cref="IGameObject"/></typeparam>
-    internal interface ISoundSourceObject<T>
-        where T : IGameObject
+    internal interface ISoundSourceObject : IGameObject
     {
         /// <summary>
         /// Gets the Sound Receiver object for the Actor.

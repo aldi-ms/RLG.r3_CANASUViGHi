@@ -28,7 +28,7 @@ namespace RLG.R3_CANASUViGHi.Interfaces
         /// <summary>
         /// The object, source of the sound.
         /// </summary>
-        ISoundSourceObject<IGameObject> Source { get; }
+        ISoundSourceObject Source { get; }
 
         /// <summary>
         /// Gets the Sound Type.

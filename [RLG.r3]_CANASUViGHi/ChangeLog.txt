@@ -2,6 +2,18 @@
 * Log keeping track of changes in RLG.r3_CANASUViGHi project
 * * * * *
 
+* * *
+* 26.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+
+* Added method static Color HSL2RGB(double h, double sl, double l) to
+ convert HSL color to XNA's RGB format.
+
+* Greeting at MessageLog constructor call added. Gradient colors
+ calculated and used for the greeting message.
+
+* Interface ISoundSourceObject now implements IGameObject, instead of
+ being a generic interface of <T> where T : IGameObject.
+
 
 * * *
 * 25.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
@@ -95,5 +107,5 @@
 * Implemented Field of View calculation for the Map.
 	- Spawning NPCs do not work for some reason. -
 	+ Issue was incorrectly assigning and keeping Flags to a Tile in
-	which a Actor has been. Working correctly now by clearing the Tile
-	Flags we do not need. +
+	which a Actor has been. Working correctly now by clearing the 
+	Tile Flags we do not need. +

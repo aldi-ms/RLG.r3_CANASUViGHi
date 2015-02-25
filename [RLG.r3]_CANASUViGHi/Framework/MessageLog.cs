@@ -70,6 +70,8 @@ namespace RLG.R3_CANASUViGHi.Framework
                     this.rectangle.Left + TextLeftPad,
                     this.rectangle.Bottom - i * this.FontHeight);
             }
+
+            this.ShowGreeting();
         }
 
         /// <summary>
@@ -386,6 +388,31 @@ namespace RLG.R3_CANASUViGHi.Framework
             }
 
             return actualText.ToString();
+        }
+
+        /// <summary>
+        /// Show a greeting message.
+        /// </summary>
+        private void ShowGreeting()
+        {
+            System.Collections.Generic.List<Color> gradient = 
+                new System.Collections.Generic.List<Color>();
+
+            for (double i = 0; i < 1; i += 0.02)
+            {
+                gradient.Add(Tools.HSL2RGB(i, 0.5, 0.5));
+            }
+
+            string greeting = "Welcome-to-Canas-Uvighi-RL/RP-Game!-@SCiENiDE-2015";
+
+            StringBuilder gradientGreeting = new StringBuilder();
+
+            for (int i = 0; i < greeting.Length; i++)
+            {
+                gradientGreeting.AppendFormat("~L{0}!{1}", gradient[i].ToUInt(), greeting[i]);
+            }
+
+            this.SendMessage(gradientGreeting.ToString());
         }
     }
 }
