@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Framework\CardinalDirectionExtensions.cs" />
+    <Compile Include="Framework\ColorExtensions.cs" />
     <Compile Include="Framework\FieldOfView\FieldOfView.cs" />
     <Compile Include="Framework\FieldOfView\FOVAlgorithm.cs" />
     <Compile Include="Framework\FieldOfView\MRPAS.cs" />
@@ -4018,6 +4019,7 @@
     <Content Include="Content\tiles\utility\Raw List.txt" />
     <Content Include="Content\tiles\utility\README.txt" />
     <Content Include="Icon.ico" />
+    <Content Include="Models\ColorMessages.txt" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

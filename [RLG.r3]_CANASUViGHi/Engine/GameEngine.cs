@@ -142,11 +142,11 @@ namespace RLG.R3_CANASUViGHi.Engine
                     {
                         // Increase the play field (map-view-box size).
                         Point nextPoint = new Point(
-                            this.testMap.ViewBoxTileSize.X + 1,
-                            this.testMap.ViewBoxTileSize.Y + 1
+                            this.testMap.ViewBoxTileCount.X + 1,
+                            this.testMap.ViewBoxTileCount.Y + 1
                             );
 
-                        this.testMap.ViewBoxTileSize = nextPoint;
+                        this.testMap.ViewBoxTileCount = nextPoint;
                         break;
                     }
 
@@ -154,11 +154,11 @@ namespace RLG.R3_CANASUViGHi.Engine
                     {
                         // Reduce the play field (map-view-box size).
                         Point prevPoint = new Point(
-                            this.testMap.ViewBoxTileSize.X - 1,
-                            this.testMap.ViewBoxTileSize.Y - 1
+                            this.testMap.ViewBoxTileCount.X - 1,
+                            this.testMap.ViewBoxTileCount.Y - 1
                             );
 
-                        this.testMap.ViewBoxTileSize = prevPoint;
+                        this.testMap.ViewBoxTileCount = prevPoint;
                         break;
                     }
 
@@ -187,7 +187,6 @@ namespace RLG.R3_CANASUViGHi.Engine
             {
                 actorQueue.AccumulateEnergy();
             }
-
             
             foreach (IActor actor in actorQueue)
             {
@@ -270,7 +269,6 @@ namespace RLG.R3_CANASUViGHi.Engine
                                 }
 
                             default:
-                                // Send message for unknown command!
                                 break;
                             #endregion
                         }
@@ -301,6 +299,8 @@ namespace RLG.R3_CANASUViGHi.Engine
             if (inGame)
             {
                 this.testMap.Draw(this.spriteBatch, this.playerActor.Position);
+
+                this.messageLog.Draw(this.spriteBatch);
             }
 
             base.Draw(gameTime);
@@ -324,7 +324,7 @@ namespace RLG.R3_CANASUViGHi.Engine
                 Framework.Tools.GenerateMap(new Point(30, 30)),
                 0, 
                 "Testing Grounds");
-            this.testMap.ViewBoxTileSize = new Point(24, 15);
+            this.testMap.ViewBoxTileCount = new Point(24, 15);
 
             bool outerBreak = false;
             for (int x = 0; x < 10; x++)
@@ -340,7 +340,23 @@ namespace RLG.R3_CANASUViGHi.Engine
                 }
 
                 if (outerBreak) { break; }
-            }
+            }            
+
+            Rectangle logRect = new Rectangle(
+                0,
+                this.testMap.ViewBoxTileCount.Y * Sprite.TileSize,
+                this.testMap.ViewBoxTileCount.X * Sprite.TileSize,
+                (ScreenHeight - 30) - this.testMap.ViewBoxTileCount.Y * Sprite.TileSize);
+
+            this.messageLog = new MessageLog(this.spriteBatch, logRect, this.testFont);
+            string greet = string.Format("~w{0}!Message ~W{1}!log ~l{2}!i~l{3}!n~s{4}!itialized. ~w{5}!Greetings!",
+                Color.CornflowerBlue.ToUInt(),
+                Color.Crimson.ToUInt(),
+                Color.White.ToUInt(), 
+                Color.BurlyWood.ToUInt(),
+                Color.LawnGreen.ToUInt(),
+                Color.IndianRed.ToUInt());
+            this.messageLog.SendMessage(greet);
 
             // Indicate that we are currently in game.
             inGame = true;

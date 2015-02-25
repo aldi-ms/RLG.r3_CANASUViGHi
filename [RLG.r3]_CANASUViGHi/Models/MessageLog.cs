@@ -20,6 +20,7 @@ namespace RLG.R3_CANASUViGHi.Models
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using RLG.R3_CANASUViGHi.Framework;
     using RLG.R3_CANASUViGHi.Interfaces;
     using System;
     using System.Text;
@@ -32,43 +33,54 @@ namespace RLG.R3_CANASUViGHi.Models
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
         private Rectangle rectangle;
-        private Point[] lineCoordinates;
+        private Vector2[] lineVectors;
 
         public MessageLog(SpriteBatch spriteBatch, Rectangle logRectangle, SpriteFont spriteFont)
         {
             this.spriteBatch = spriteBatch;
             this.rectangle = logRectangle;
             this.spriteFont = spriteFont;
-            
+
             // Default text color
             this.textColor = Color.Gray;
 
             int lineCount = this.rectangle.Height / this.FontHeight;
             this.lines = new StringBuilder[lineCount];
-            this.lineCoordinates = new Point[lineCount];
+            this.lineVectors = new Vector2[lineCount];
 
             // Initialize line coordinates, from bottom [0] to top [Length - 1].
             for (int i = 0; i < lineCount; i++)
             {
                 this.lines[i] = new StringBuilder();
 
-                this.lineCoordinates[i] = new Point(
+                this.lineVectors[i] = new Vector2(
                     this.rectangle.Left + Padding,
-                    this.rectangle.Bottom + i * this.FontHeight);
+                    this.rectangle.Bottom - i * this.FontHeight);
             }
         }
 
+        /// <summary>
+        /// Gets or sets the color in which to draw the log text.
+        /// </summary>
         public Color TextColor
         {
             get { return this.textColor; }
             set { this.textColor = value; }
-        } 
+        }
 
+        /// <summary>
+        /// Gets the height of the font.
+        /// </summary>
         private int FontHeight
         {
             get { return this.spriteFont.LineSpacing; }
         }
 
+        /// <summary>
+        /// Send a message to the log to be displayed.
+        /// </summary>
+        /// <param name="text">The string message.</param>
+        /// <returns>True if the message was sent successfuly, false otherwise.</returns>
         public bool SendMessage(string text)
         {
             if (this.TextLengthOnScreen(new StringBuilder(text)) <= this.rectangle.Width)
@@ -82,10 +94,11 @@ namespace RLG.R3_CANASUViGHi.Models
                 lines[0].Clear();
                 lines[0].Append(text);
 
-                PrintMessageLog();
+                // PrintMessageLog();
+
+                return true;
                 // WriteLogFile(text);     //make log file save on game save instead of every message?
             }
-            //else block also present (copied from here) in Window.Write
             else
             {
                 string[] splitText = text.Split(' ');
@@ -110,33 +123,197 @@ namespace RLG.R3_CANASUViGHi.Models
 
                 StringBuilder secondPartText = new StringBuilder();
                 for (int i = firstUnappendedString; i < splitText.Length; i++)
+                {
                     secondPartText.AppendFormat("{0} ", splitText[i]);
+                }
 
                 SendMessage(firstPartText.ToString());
                 SendMessage(secondPartText.ToString());
             }
 
-            throw new NotImplementedException();
+            return false;
         }
 
+        /// <summary>
+        /// Clear the log line content.
+        /// </summary>
         public void ClearLog()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < lines.Length; i++)
+            {
+                this.lines[i].Clear();
+            }
         }
 
-        private void PrintMessageLog()
+        /// <summary>
+        /// Draw the Message Log on the screen.
+        /// </summary>
+        /// <remarks>To color string/part of a string to a specific color check ColorMessages.txt.</remarks>
+        /// <param name="spriteBatch">The SpriteBatch object used to draw the log.</param>
+        public void Draw(SpriteBatch spriteBatch)
         {
-            throw new NotImplementedException();
+            spriteBatch.Begin();
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                #region Colored string draw
+                int linePosition = 0;
+                string workText = lines[i].ToString();
+                char selector = '\0';
+                StringBuilder color = new StringBuilder(10);
+
+                for (int k = 0; k < workText.Length; k++)
+                {
+                    if (workText[k] == '~')
+                    {
+                        // Beggining of a escape formatting sequence.
+                        selector = workText[++k];
+
+                        while (workText[++k] != '!')
+                        {
+                            color.Append(workText[k]);
+                        }
+
+                        k++;
+
+                        // Select text block to color.
+                        string selectedText = "";
+
+                        switch (selector)
+                        {
+                            case 'L':
+                            case 'l':
+                                {
+                                    selectedText = workText[k].ToString();
+                                    k--;
+                                    break;
+                                }
+
+                            case 'W':
+                            case 'w':
+                                {
+                                    StringBuilder sb = new StringBuilder(20);
+
+                                    for (int j = k; j < workText.Length; j++)
+                                    {
+                                        bool endOfWord = char.IsWhiteSpace(workText[j]) || char.IsPunctuation(workText[j]);
+
+                                        if (!endOfWord)
+                                        {
+                                            sb.Append(workText[j]);
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    selectedText = sb.ToString();
+                                    k--;
+                                    break;
+                                }
+
+                            case 'S':
+                            case 's':
+                                {
+                                    selectedText = new string(workText.ToCharArray(), k, workText.Length - k);
+                                    selectedText = this.RemoveColorSeq(selectedText, true);
+                                    k--;
+                                    break;
+                                }
+                        }
+
+                        uint colorUInt = uint.Parse(color.ToString());
+                        Color parsedColor = colorUInt.ToColor();
+                        color.Clear();
+
+                        Vector2 newPosition = new Vector2(
+                            lineVectors[i].X + linePosition, 
+                            lineVectors[i].Y);
+
+                        // Set the line position for the next string.
+                        linePosition += this.TextLengthOnScreen(selectedText);
+
+                        this.spriteBatch.DrawString(
+                            this.spriteFont,
+                            selectedText,
+                            newPosition,
+                            parsedColor
+                            );
+
+                        k += selectedText.Length;
+                    }
+                    else
+                    {
+                        Vector2 newPosition = new Vector2(
+                            lineVectors[i].X + linePosition,
+                            lineVectors[i].Y);
+
+                        spriteBatch.DrawString(
+                            this.spriteFont,
+                            this.lines[i][k].ToString(),
+                            newPosition,
+                            this.textColor);
+
+                        linePosition += this.TextLengthOnScreen(this.lines[i][k].ToString());
+                    }
+                }
+                #endregion
+            }
+
+            spriteBatch.End();
         }
 
+        /// <summary>
+        /// Returns the length of a string displayed on the screen.
+        /// </summary>
+        /// <param name="text">The string text.</param>
+        /// <returns>Length of the text drawn on the screen, using this SpriteFont.</returns>
         private int TextLengthOnScreen(string text)
         {
-            return (int)this.spriteFont.MeasureString(text).X;
+            return (int)this.spriteFont.MeasureString(this.RemoveColorSeq(text)).X;
         }
 
+        /// <summary>
+        /// Returns the length of a StringBuilder displayed on the screen.
+        /// </summary>
+        /// <param name="text">The StringBuilder text.</param>
+        /// <returns>Length of the text drawn on the screen, using this SpriteFont.</returns>
         private int TextLengthOnScreen(StringBuilder text)
         {
             return this.TextLengthOnScreen(text.ToString());
+        }
+
+        private string RemoveColorSeq(string text, bool breakOnSequence = false)
+        {
+            bool skip = false;
+            StringBuilder actualText = new StringBuilder();
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == '~')
+                {
+                    if (breakOnSequence)
+                    {
+                        return actualText.ToString();
+                    }
+
+                    skip = true;
+                }
+
+                if (!skip)
+                {
+                    actualText.Append(text[i]);
+                }
+                else
+                {
+                    if (text[i] == '!')
+                    {
+                        skip = false;
+                    }
+                }
+            }
+
+            return actualText.ToString();
         }
     }
 }

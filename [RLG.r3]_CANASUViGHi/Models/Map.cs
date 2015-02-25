@@ -50,7 +50,7 @@ namespace RLG.R3_CANASUViGHi.Models
             : base(id, name, flags)
         {
             this.Tiles = tiles;
-            this.ViewBoxTileSize = viewBoxTileSize;
+            this.ViewBoxTileCount = viewBoxTileSize;
             this.fieldOfView = new FieldOfView<T>(this.Tiles);
         }
 
@@ -97,7 +97,7 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <summary>
         /// Gets or sets the Map view-box size in number of Tiles to draw.
         /// </summary>
-        public Point ViewBoxTileSize
+        public Point ViewBoxTileCount
         {
             get { return this.viewBoxTileSize; }
 
@@ -129,8 +129,8 @@ namespace RLG.R3_CANASUViGHi.Models
 
             // Get the start (Tile)coordinates  for the Map
             Point startTile = new Point(
-                center.X - (this.ViewBoxTileSize.X / 2),
-                center.Y - (this.ViewBoxTileSize.Y / 2));
+                center.X - (this.ViewBoxTileCount.X / 2),
+                center.Y - (this.ViewBoxTileCount.Y / 2));
 
             // Check coordinates lower bound < 0
             if (startTile.X < 0)
@@ -143,19 +143,19 @@ namespace RLG.R3_CANASUViGHi.Models
             }
 
             // Check coordinates higher bound > 0
-            if (startTile.X + this.ViewBoxTileSize.X >= this.Tiles.Height)
+            if (startTile.X + this.ViewBoxTileCount.X >= this.Tiles.Height)
             {
-                startTile.X = this.Tiles.Height - this.ViewBoxTileSize.X;
+                startTile.X = this.Tiles.Height - this.ViewBoxTileCount.X;
             }
 
-            if (startTile.Y + this.ViewBoxTileSize.Y >= this.Tiles.Width)
+            if (startTile.Y + this.ViewBoxTileCount.Y >= this.Tiles.Width)
             {
-                startTile.Y = this.Tiles.Width - this.ViewBoxTileSize.Y;
+                startTile.Y = this.Tiles.Width - this.ViewBoxTileCount.Y;
             }
 
-            for (int x = 0; x < this.ViewBoxTileSize.X; x++)
+            for (int x = 0; x < this.ViewBoxTileCount.X; x++)
             {
-                for (int y = 0; y < this.ViewBoxTileSize.Y; y++)
+                for (int y = 0; y < this.ViewBoxTileCount.Y; y++)
                 {
                     Vector2 drawPosition = new Vector2(10 + (Sprite.TileSize * x), 10 + (Sprite.TileSize * y));
                     Point tile = new Point(startTile.X + x, startTile.Y + y);

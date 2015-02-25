@@ -2,10 +2,17 @@
 * Log keeping track of changes in RLG.r3_CANASUViGHi project
 * * * * *
 
+25.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+
+* The MessageLog now works as expected; splits too long string to
+ several rows, and uses in-string code to denote a specifically
+  colored letter/word/string (check Models/ColorMessages.txt for 
+  more details.)
+
 24.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * Created an interface IMessageLog to use to draw and keep string
- messages. class MessageLog implements the interface.
+ messages. class MessageLog now implements the interface.
 
 23.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 

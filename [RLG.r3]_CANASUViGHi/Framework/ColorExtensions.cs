@@ -16,32 +16,26 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Framework
 {
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
-    using RLG.R3_CANASUViGHi.Framework;
 
-    internal interface IMessageLog
+    internal static class ColorExtensions
     {
-        /// <summary>
-        /// Gets or sets the color of the text in the log.
-        /// </summary>
-        Color TextColor { get; set; }
+        public static uint ToUInt(this Color color)
+        {
+            return (uint)((color.A << 24) | (color.R << 16) |
+                          (color.G << 8) | (color.B << 0));
+        }
 
-        /// <summary>
-        /// Send a message to the log to be displayed.
-        /// </summary>
-        /// <param name="text">String text message.</param>
-        /// <returns>Indicates whether the message was successfuly shown.</returns>
-        bool SendMessage(string text);
+        public static Color ToColor(this uint color)
+        {
+            byte a = (byte)(color >> 24);
+            byte r = (byte)(color >> 16);
+            byte g = (byte)(color >> 8);
+            byte b = (byte)(color >> 0);
 
-        void Draw(SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Clear the log.
-        /// </summary>
-        void ClearLog();
+            return new Color(r, g, b, a);
+        }
     }
 }
