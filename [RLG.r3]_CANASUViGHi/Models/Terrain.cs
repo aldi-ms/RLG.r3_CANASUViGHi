@@ -23,7 +23,7 @@ namespace RLG.R3_CANASUViGHi.Models
     using RLG.R3_CANASUViGHi.Interfaces;
 
     /// <summary>
-    /// Terrain information.
+    /// Terrain object.
     /// </summary>
     internal sealed class Terrain : GameObject, ITerrain
     {
@@ -43,7 +43,7 @@ namespace RLG.R3_CANASUViGHi.Models
         }
                 
         /// <summary>
-        /// Gets the Texture2D of the Terrain.
+        /// Gets the Texture of the Terrain.
         /// </summary>
         public Texture2D Texture { get; private set; }
 

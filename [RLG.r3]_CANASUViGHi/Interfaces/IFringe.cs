@@ -18,18 +18,7 @@
 
 namespace RLG.R3_CANASUViGHi.Interfaces
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using RLG.R3_CANASUViGHi.Interfaces;
-    using RLG.R3_CANASUViGHi.Framework;
-
-    interface IMap<T> where T : ITile
+    internal interface IFringe : IDrawableObject
     {
-        FlatArray<T> Tiles { get; set; }
-
-        T this[Point index] { get; set; }
-
-        void Draw(SpriteBatch spriteBatch, Point centre);
-        bool CheckTile(Point p, out string blocking);
     }
 }

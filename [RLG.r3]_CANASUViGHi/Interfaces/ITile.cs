@@ -34,7 +34,7 @@ namespace RLG.R3_CANASUViGHi.Interfaces
         /// <summary>
         /// Gets or sets the Fringe element ID of the Tile.
         /// </summary>
-        int Fringe { get; set; }
+        IFringe Fringe { get; set; }
 
         /// <summary>
         /// Gets or sets the Item List ID of the Tile.

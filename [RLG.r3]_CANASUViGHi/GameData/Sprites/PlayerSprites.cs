@@ -21,6 +21,9 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
+    /// <summary>
+    /// Load and keep all textures in properly named properties.
+    /// </summary>
     internal sealed class PlayerSprites
     {
         /// <summary>
@@ -34,7 +37,7 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
         }
 
         /// <summary>
-        /// Gets actor sprite human_m
+        /// Gets sprite "human_m".
         /// </summary>
         internal Texture2D HumanM { get; private set; }
     }

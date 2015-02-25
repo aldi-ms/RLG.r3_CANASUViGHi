@@ -55,6 +55,7 @@ namespace RLG.R3_CANASUViGHi.Framework
             Terrain blockedTerrain = new Terrain(1, "wall", Sprite.Wall.BrickBrown0, Flags.IsBlocked, -1);
 
             FlatArray<ITile> resultTiles = new FlatArray<ITile>(size.X, size.Y);
+            IFringe tree = new Fringe(0, "Red tree", Sprite.Fringe.Tree2Red, Flags.IsBlocked);
 
             for (int x = 0; x < size.X; x++)
             {
@@ -62,11 +63,18 @@ namespace RLG.R3_CANASUViGHi.Framework
                 {
                     if (RNG.Next(0, 10) > 1)
                     {
-                        resultTiles[x, y] = new Tile(nonBlockedTerrain, 0, 0, null);
+                        if (RNG.Next(0, 25) > 1)
+                        {
+                            resultTiles[x, y] = new Tile(nonBlockedTerrain, null, 0, null);
+                        }
+                        else
+                        {
+                            resultTiles[x, y] = new Tile(nonBlockedTerrain, tree, 0, null);
+                        }
                     }
                     else
                     {
-                        resultTiles[x, y] = new Tile(blockedTerrain, 0, 0, null);
+                        resultTiles[x, y] = new Tile(blockedTerrain, null, 0, null);
                     }
                 }
             }

@@ -21,7 +21,10 @@ namespace RLG.R3_CANASUViGHi.Models
     using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Interfaces;
 
-    // Basic Map cell / keeps IDs to all objects contained in a Tile.
+    /// <summary>
+    ///  Basic Map Tile implementation, keeps refences to the objects
+    ///  contained in a Tile.
+    /// </summary>
     internal sealed class Tile : ITile
     {
         private Flags flags;
@@ -29,15 +32,15 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="Tile" /> class.
         /// </summary>
-        /// <param name="terrain">Terrain ID.</param>
-        /// <param name="fringe">Game Object ID.</param>
+        /// <param name="terrain">Terrain object.</param>
+        /// <param name="fringe">Fringe object.</param>
         /// <param name="itemList">to be implemented...</param>
-        /// <param name="unit">Unit ID.</param>
-        public Tile(ITerrain terrain, int fringe, int itemList, IActor unit) 
+        /// <param name="actor">Actor object.</param>
+        public Tile(ITerrain terrain, IFringe fringe, int itemList, IActor actor) 
         {
             this.Terrain = terrain;
             this.Fringe = fringe;
-            this.Actor = unit;
+            this.Actor = actor;
 
             // Set flags to cumulative from other flags (see Flags)
             this.Flags = Flags.None;
@@ -45,28 +48,29 @@ namespace RLG.R3_CANASUViGHi.Models
 
         #region Properties
         /// <summary>
-        /// Gets or sets the Terrain ID of the Tile.
+        /// Gets or sets the Terrain object in the Tile.
         /// </summary>
         public ITerrain Terrain { get; set; }
 
         /// <summary>
-        /// Gets or sets the Fringe ID of the Tile.
+        /// Gets or sets the Fringe object in the Tile.
         /// </summary>
-        public int Fringe { get; set; }
+        public IFringe Fringe { get; set; }
 
         /// <summary>
-        /// Gets or sets the Item List ID of the Tile.
+        /// Gets or sets the Item List in the Tile.
         /// </summary>
         public int ItemList { get; set; }
 
         /// <summary>
-        /// Gets or sets the Actor ID of the Tile.
+        /// Gets or sets the Actor object in the Tile.
         /// </summary>
         public IActor Actor { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the Tile is visible.
         /// </summary>
+        /// <remarks>Uses Flags.IsVisible.</remarks>
         public bool IsVisible
         {
             get { return this.Flags.HasFlag(Flags.IsVisible); }
@@ -85,7 +89,7 @@ namespace RLG.R3_CANASUViGHi.Models
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the Tile is transparent.
+        /// Gets a value indicating whether the Tile is transparent.
         /// </summary>
         public bool IsTransparent 
         {
@@ -118,15 +122,19 @@ namespace RLG.R3_CANASUViGHi.Models
         {
             get
             {
-                // cumulative from terrain, gameobj, itemlist & actor Flags
+                Flags cumulativeFlags = this.flags | this.Terrain.Flags;
+
                 if (this.Actor != null)
                 {
-                    return this.flags | this.Terrain.Flags | this.Actor.Flags;
+                    cumulativeFlags |= this.Actor.Flags;
                 }
-                else
+
+                if (this.Fringe != null)
                 {
-                    return this.flags | this.Terrain.Flags;
+                    cumulativeFlags |= this.Fringe.Flags;
                 }
+
+                return cumulativeFlags;
             }
 
             set 

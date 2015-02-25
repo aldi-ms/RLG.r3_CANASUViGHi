@@ -34,12 +34,12 @@ namespace RLG.R3_CANASUViGHi.GameData
         internal const int TileSize = 32;
 
         /// <summary>
-        /// Gets loaded Actor sprites.
+        /// Gets loaded actor sprites.
         /// </summary>
         internal static PlayerSprites Player { get; private set; }
 
         /// <summary>
-        /// Gets loaded Floor sprites.
+        /// Gets loaded floor sprites.
         /// </summary>
         internal static FloorSprites Floor { get; private set; }
 
@@ -48,7 +48,15 @@ namespace RLG.R3_CANASUViGHi.GameData
         /// </summary>
         internal static WallSprites Wall { get; private set; }
 
+        /// <summary>
+        /// Gets loaded monster sprites.
+        /// </summary>
         internal static MonsterSprites Monster { get; private set; }
+
+        /// <summary>
+        /// Gets loaded fringe sprites.
+        /// </summary>
+        internal static FringeSprites Fringe { get; private set; }
 
         /// <summary>
         /// Static initializer for loading all sprites / textures.
@@ -74,6 +82,11 @@ namespace RLG.R3_CANASUViGHi.GameData
             if (Monster == null)
             {
                 Monster = new MonsterSprites(content);
+            }
+
+            if (Fringe == null)
+            {
+                Fringe = new FringeSprites(content);
             }
         }
     }

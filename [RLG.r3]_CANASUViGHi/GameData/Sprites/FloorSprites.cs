@@ -22,7 +22,7 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    /// Load and keep all textures in properly named properties.
+    /// Load and keep all floor textures in properties.
     /// </summary>
     internal sealed class FloorSprites
     {
@@ -37,7 +37,7 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
         }
 
         /// <summary>
-        /// Gets floor sprite pebble_brown0.
+        /// Gets sprite "pebble_brown0".
         /// </summary>
         internal Texture2D PebbleBrown0 { get; private set; }
     }

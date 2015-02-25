@@ -92,7 +92,8 @@ namespace RLG.R3_CANASUViGHi.Models
         {
             if (!this.hasSpawned)
             {
-                if (map.CheckTile(spawnPoint))
+                string block;
+                if (map.CheckTile(spawnPoint, out block))
                 {
                     this.map = map;
                     this.Position = spawnPoint;
@@ -122,8 +123,9 @@ namespace RLG.R3_CANASUViGHi.Models
             }
 
             Point newPosition = this.Position + direction.GetDeltaCoordinate();
+            string block;
 
-            if (this.map.CheckTile(newPosition))
+            if (this.map.CheckTile(newPosition, out block))
             {
                 this.map[this.Position].Actor = null;
                 this.map[this.Position].ClearFlags();

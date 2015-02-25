@@ -16,7 +16,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Models
+namespace RLG.R3_CANASUViGHi.Framework
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -33,6 +33,7 @@ namespace RLG.R3_CANASUViGHi.Models
     {
         private const int TextLeftPad = 5;
         private readonly int spaceScreenWidth;
+
         private Color textColor;
         private StringBuilder[] lines;
         private SpriteFont spriteFont;
@@ -180,11 +181,13 @@ namespace RLG.R3_CANASUViGHi.Models
 
                 for (int k = 0; k < workText.Length; k++)
                 {
+                    // Beggining of an escape formatting sequence.
                     if (workText[k] == '~')
                     {
-                        // Beggining of a escape formatting sequence.
+                        // Get the selector character.
                         selector = workText[++k];
 
+                        // Get the color code.
                         while (workText[++k] != '!')
                         {
                             color.Append(workText[k]);
@@ -192,16 +195,16 @@ namespace RLG.R3_CANASUViGHi.Models
 
                         k++;
 
-                        // Select text block to color.
+                        // Select text to color.
                         string selectedText = "";
 
+                        #region Text Select
                         switch (selector)
                         {
                             case 'L':
                             case 'l':
                                 {
                                     selectedText = workText[k].ToString();
-                                    k--;
                                     break;
                                 }
 
@@ -212,7 +215,7 @@ namespace RLG.R3_CANASUViGHi.Models
 
                                     for (int j = k; j < workText.Length; j++)
                                     {
-                                        bool endOfWord = char.IsWhiteSpace(workText[j]) || char.IsPunctuation(workText[j]);
+                                        bool endOfWord = char.IsWhiteSpace(workText[j]);
 
                                         if (!endOfWord)
                                         {
@@ -225,7 +228,6 @@ namespace RLG.R3_CANASUViGHi.Models
                                     }
 
                                     selectedText = sb.ToString();
-                                    k--;
                                     break;
                                 }
 
@@ -234,10 +236,19 @@ namespace RLG.R3_CANASUViGHi.Models
                                 {
                                     selectedText = new string(workText.ToCharArray(), k, workText.Length - k);
                                     selectedText = this.RemoveColorSeq(selectedText, true);
-                                    k--;
                                     break;
                                 }
+
+                            default:
+                                {
+                                    throw new ArgumentException(
+                                        "Invalid selector char in MessageLog color string sequence!",
+                                        "selector");
+                                }
                         }
+
+                        k--;
+                        #endregion
 
                         uint colorUInt = uint.Parse(color.ToString());
                         Color parsedColor = colorUInt.ToColor();
@@ -254,8 +265,7 @@ namespace RLG.R3_CANASUViGHi.Models
                             this.spriteFont,
                             selectedText,
                             newPosition,
-                            parsedColor
-                            );
+                            parsedColor);
 
                         k += selectedText.Length;
                     }
@@ -302,7 +312,6 @@ namespace RLG.R3_CANASUViGHi.Models
 
         private string RemoveColorSeq(string text, bool breakOnSequence = false)
         {
-            bool skip = false;
             StringBuilder actualText = new StringBuilder();
 
             for (int i = 0; i < text.Length; i++)
@@ -314,7 +323,6 @@ namespace RLG.R3_CANASUViGHi.Models
                         return actualText.ToString();
                     }
 
-                    skip = true;
                     i += 13;
                 }
 

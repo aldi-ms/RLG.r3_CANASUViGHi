@@ -163,20 +163,15 @@ namespace RLG.R3_CANASUViGHi.Models
                     if (this[tile].IsVisible)
                     {
                         this[tile].Flags |= Flags.HasBeenSeen;
+
                         // Draw the Terrain first as it exists for every Tile.
                         spriteBatch.Draw(this[tile].Terrain.Texture, drawPosition);
 
-                        /* *
-                        if (this[tile].GameObject != null)
+                        if (this[tile].Fringe != null)
                         {
-                            spriteBatch.Draw(this[tile].GameObject.Texture, drawPosition);
+                            spriteBatch.Draw(this[tile].Fringe.Texture, drawPosition);
                         }
-                        if (this[tile].Item != null)
-                        {
-                            spriteBatch.Draw(this[tile].Item.Texture, drawPosition);
-                        }
-                         * 
-                        * */
+
                         if (this[tile].Actor != null)
                         {
                             spriteBatch.Draw(this[tile].Actor.Texture, drawPosition);
@@ -185,6 +180,11 @@ namespace RLG.R3_CANASUViGHi.Models
                     else if (this[tile].Flags.HasFlag(Flags.HasBeenSeen))
                     {
                         spriteBatch.Draw(this[tile].Terrain.Texture, drawPosition, Color.DarkGray);
+
+                        if (this[tile].Fringe != null)
+                        {
+                            spriteBatch.Draw(this[tile].Fringe.Texture, drawPosition);
+                        }
                     }
                 }
             }
@@ -198,12 +198,13 @@ namespace RLG.R3_CANASUViGHi.Models
         /// </summary>
         /// <param name="p"></param>
         /// <returns>True if the tile is a valid destination Tile, otherwise false.</returns>
-        public bool CheckTile(Point p)
+        public bool CheckTile(Point p, out string blocking)
         {
             // Check if the coordinates are out if map-bounds.
             if (p.X < 0 || p.X >= this.Tiles.Width ||
                 p.Y < 0 || p.Y >= this.Tiles.Height)
             {
+                blocking = null;
                 return false;
             }
 
@@ -211,15 +212,23 @@ namespace RLG.R3_CANASUViGHi.Models
             if (this[p].Flags.HasFlag(Flags.IsBlocked) || 
                 this[p].Terrain.MovementCost <= 0)
             {
+                blocking = "none";
+
+                if (this[p].Actor != null &&
+                    this[p].Actor.Flags.HasFlag(Flags.IsBlocked))
+                {
+                    blocking = string.Format("a {0}", this[p].Actor.Name);
+                }
+                else if (this[p].Fringe != null && 
+                    this[p].Fringe.Flags.HasFlag(Flags.IsBlocked))
+                {
+                    blocking = string.Format("a {0}", this[p].Fringe.Name);
+                }
+
                 return false;
             }
 
-            // Redundant check? In that case Tile should have IsBlocked flag?
-            if (this[p].Actor != null)
-            {
-                return false;
-            }
-
+            blocking = null;
             return true;
         }
     }

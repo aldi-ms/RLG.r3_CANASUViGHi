@@ -52,6 +52,7 @@
     <Compile Include="Framework\PriorityQueue.cs" />
     <Compile Include="Framework\Tools.cs" />
     <Compile Include="GameData\Sprites\FloorSprites.cs" />
+    <Compile Include="GameData\Sprites\FringeSprites.cs" />
     <Compile Include="GameData\Sprites\PlayerSprites.cs" />
     <Compile Include="GameData\Sprite.cs" />
     <Compile Include="GameData\Sprites\MonsterSprites.cs" />
@@ -59,14 +60,16 @@
     <Compile Include="GameMain.cs" />
     <Compile Include="Interfaces\IActor.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
+    <Compile Include="Interfaces\IFringe.cs" />
     <Compile Include="Interfaces\IGameObject.cs" />
     <Compile Include="Interfaces\IMap.cs" />
     <Compile Include="Interfaces\IMessageLog.cs" />
     <Compile Include="Interfaces\ITerrain.cs" />
     <Compile Include="Interfaces\ITile.cs" />
+    <Compile Include="Models\Fringe.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Map.cs" />
-    <Compile Include="Models\MessageLog.cs" />
+    <Compile Include="Framework\MessageLog.cs" />
     <Compile Include="Models\Terrain.cs" />
     <Compile Include="Models\Tile.cs" />
     <Compile Include="Models\Actor.cs" />

@@ -2,23 +2,54 @@
 * Log keeping track of changes in RLG.r3_CANASUViGHi project
 * * * * *
 
-25.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+
+* * *
+* 25.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * The MessageLog now works as expected; splits too long string to
  several rows, and uses in-string code to denote a specifically
  colored letter/word/string (check Models/ColorMessages.txt for 
- more details.)
+ more details).
 
 * MessageLog now correctly calculates and splits long lines, adding
  LeftPadding and the space character width (with the selected font)
  to the text screen length.
 
-24.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+* Words selector ('W', 'w') for colored messages now break on white
+ space, and not on punctuation - meaning punctuation after a selected
+ word will also be selected. 
+
+* Moved the class MessageLog from Models/ to Framework/ project folder.
+
+* Created the IFringe interface (which implements IDrawableObject) to
+ use for fringe objects on the map. The Fringe class implements IFringe
+ to instantiate Fringe objects.
+
+* Modified Tools.GenerateMap() to have a chance to spawn a Fringe
+ object "Tree" on non-blocked Tiles.
+
+* Added class FringeSprites to GameData/Sprites/, and a static reference
+ in class GameData.Sprite to load and keep all Fringe object textures.
+
+* Method bool IMap.CheckTile(Point p) changed to have an string out
+ parameter as well - bool CheckTile(Point p, out string blocking) to
+ return the string representation of the object blocking the Tile (if
+ blocked, else returns null);
+
+* ITile interface int Fringe { get; set } changed to 
+ IFringe Fringe { get; set; } to use the new IFringe interface.
+ Corresponding changes made to the class Tile.
+
+
+* * *
+* 24.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * Created an interface IMessageLog to use to draw and keep string
  messages. class MessageLog now implements the interface.
 
-23.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+
+* * *
+* 23.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * First commit of the started before several days project based on
  an older project -MonoGame_RLG.Revival-CANASUViGHi.

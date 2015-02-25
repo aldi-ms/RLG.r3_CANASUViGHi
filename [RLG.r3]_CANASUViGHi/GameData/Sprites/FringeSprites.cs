@@ -22,23 +22,29 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    /// Load and keep all monster textures in properties.
+    /// Load and keep all fringe textures in properties.
     /// </summary>
-    internal sealed class MonsterSprites
+    internal sealed class FringeSprites
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonsterSprites" /> class.
-        /// Loads all actor sprites.
+        /// Initializes a new instance of the <see cref="FringeSprites" /> class.
+        /// Loads all fringe sprites.
         /// </summary>
         /// <param name="content">MonoGame ContentManager.</param>
-        public MonsterSprites(ContentManager content)
+        public FringeSprites(ContentManager contentManager)
         {
-            this.Rat = content.Load<Texture2D>("tiles/monster/animals/rat");
+            this.Tree2Yellow = contentManager.Load<Texture2D>("tiles/dungeon/wall/tree2_yellow");
+            this.Tree2Red = contentManager.Load<Texture2D>("tiles/dungeon/wall/tree2_red");
         }
 
         /// <summary>
-        /// Gets sprite "rat".
+        /// Gets sprite "tree2_yellow".
         /// </summary>
-        internal Texture2D Rat { get; private set; }
+        internal Texture2D Tree2Yellow { get; private set; }
+
+        /// <summary>
+        /// Gets sprite "tree2_red".
+        /// </summary>
+        internal Texture2D Tree2Red { get; private set; }
     }
 }

@@ -16,29 +16,33 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.GameData.Sprites
+namespace RLG.R3_CANASUViGHi.Models
 {
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using RLG.R3_CANASUViGHi.Enums;
+    using RLG.R3_CANASUViGHi.Interfaces;
 
     /// <summary>
-    /// Load and keep all monster textures in properties.
+    /// Fringe object.
     /// </summary>
-    internal sealed class MonsterSprites
+    internal sealed class Fringe : GameObject, IFringe
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MonsterSprites" /> class.
-        /// Loads all actor sprites.
+        /// Initializes a new instance of the <see cref="Fringe" /> class.
         /// </summary>
-        /// <param name="content">MonoGame ContentManager.</param>
-        public MonsterSprites(ContentManager content)
+        /// <param name="id">The ID of the Fringe object.</param>
+        /// <param name="name">The name of the Fringe object.</param>
+        /// <param name="texture">The texture representing the Fringe object.</param>
+        /// <param name="flags">Fringe object flags.</param>
+        public Fringe(int id, string name, Texture2D texture, Flags flags)
+            : base(id, name, flags)
         {
-            this.Rat = content.Load<Texture2D>("tiles/monster/animals/rat");
+            this.Texture = texture;
         }
 
         /// <summary>
-        /// Gets sprite "rat".
+        /// Gets the Texture of the Terrain.
         /// </summary>
-        internal Texture2D Rat { get; private set; }
+        public Texture2D Texture { get; private set; }
     }
 }

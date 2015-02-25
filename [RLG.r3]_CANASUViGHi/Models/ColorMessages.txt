@@ -12,7 +12,7 @@
 
 -->	[select_char]			- selects the size/length of text to colour (case-insensitive). ->
 	L - selects the next letter from the string.
-	W - selects the next word.
+	W - selects the next word (selection breaks on whitespace).
 	S - selects the rest of the string.
 
 

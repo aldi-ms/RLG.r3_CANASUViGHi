@@ -37,7 +37,7 @@ namespace RLG.R3_CANASUViGHi.GameData.Sprites
         }
 
         /// <summary>
-        /// Gets wall sprite brick_brown0.
+        /// Gets sprite "brick_brown0".
         /// </summary>
         internal Texture2D BrickBrown0 { get; private set; }
     }
