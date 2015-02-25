@@ -206,6 +206,7 @@ namespace RLG.R3_CANASUViGHi.Engine
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.North);
                                     this.expectCommand = false;
+                                    this.messageLog.SendMessage("Actor move north");
                                     break;
                                 }
 
@@ -215,6 +216,7 @@ namespace RLG.R3_CANASUViGHi.Engine
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.South);
                                     this.expectCommand = false;
+                                    this.messageLog.SendMessage("Actor move south");
                                     break;
                                 }
 
@@ -223,6 +225,7 @@ namespace RLG.R3_CANASUViGHi.Engine
                             case Keys.Left:
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.West);
+                                    this.messageLog.SendMessage("Actor move west");
                                     this.expectCommand = false;
                                     break;
                                 }
@@ -232,6 +235,7 @@ namespace RLG.R3_CANASUViGHi.Engine
                             case Keys.Right:
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.East);
+                                    this.messageLog.SendMessage("Actor move east");
                                     this.expectCommand = false;
                                     break;
                                 }
@@ -240,6 +244,9 @@ namespace RLG.R3_CANASUViGHi.Engine
                             case Keys.Y:
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.NorthWest);
+
+                                    this.messageLog.SendMessage(
+                                        "Actor move northwest. This is a very long test message to check the Message Log correctness in splitting too long lines, that do not otherwise fit in the Message Log rectangle.");
                                     this.expectCommand = false;
                                     break;
                                 }
@@ -348,7 +355,7 @@ namespace RLG.R3_CANASUViGHi.Engine
                 this.testMap.ViewBoxTileCount.X * Sprite.TileSize,
                 (ScreenHeight - 30) - this.testMap.ViewBoxTileCount.Y * Sprite.TileSize);
 
-            this.messageLog = new MessageLog(this.spriteBatch, logRect, this.testFont);
+            this.messageLog = new MessageLog(logRect, this.testFont);
             string greet = string.Format("~w{0}!Message ~W{1}!log ~l{2}!i~l{3}!n~s{4}!itialized. ~w{5}!Greetings!",
                 Color.CornflowerBlue.ToUInt(),
                 Color.Crimson.ToUInt(),

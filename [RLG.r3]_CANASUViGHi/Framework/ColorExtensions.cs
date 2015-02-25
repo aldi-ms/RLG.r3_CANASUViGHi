@@ -22,12 +22,22 @@ namespace RLG.R3_CANASUViGHi.Framework
 
     internal static class ColorExtensions
     {
+        /// <summary>
+        /// Convert XNA Color object to UInt number.
+        /// </summary>
+        /// <param name="color">Color we want to parse to UInt.</param>
+        /// <returns>The UInt representing the Color.</returns>
         public static uint ToUInt(this Color color)
         {
             return (uint)((color.A << 24) | (color.R << 16) |
                           (color.G << 8) | (color.B << 0));
         }
 
+        /// <summary>
+        /// Convert UInt number to XNA Color object.
+        /// </summary>
+        /// <param name="color">UInt we want to parse to Color.</param>
+        /// <returns>XNA Color object.</returns>
         public static Color ToColor(this uint color)
         {
             byte a = (byte)(color >> 24);

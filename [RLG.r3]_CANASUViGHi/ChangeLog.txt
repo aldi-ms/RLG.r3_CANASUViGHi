@@ -6,8 +6,12 @@
 
 * The MessageLog now works as expected; splits too long string to
  several rows, and uses in-string code to denote a specifically
-  colored letter/word/string (check Models/ColorMessages.txt for 
-  more details.)
+ colored letter/word/string (check Models/ColorMessages.txt for 
+ more details.)
+
+* MessageLog now correctly calculates and splits long lines, adding
+ LeftPadding and the space character width (with the selected font)
+ to the text screen length.
 
 24.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 

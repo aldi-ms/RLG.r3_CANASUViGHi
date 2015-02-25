@@ -25,21 +25,32 @@ namespace RLG.R3_CANASUViGHi.Models
     using System;
     using System.Text;
 
+    /// <summary>
+    /// A Message Log used for sending and drawing messages on the screen.
+    /// Supports colored messages, see Models/ColorMessages.txt for more info.
+    /// </summary>
     internal sealed class MessageLog : IMessageLog
     {
-        private const int Padding = 5;
+        private const int TextLeftPad = 5;
+        private readonly int spaceScreenWidth;
         private Color textColor;
         private StringBuilder[] lines;
-        private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
         private Rectangle rectangle;
         private Vector2[] lineVectors;
 
-        public MessageLog(SpriteBatch spriteBatch, Rectangle logRectangle, SpriteFont spriteFont)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageLog" /> class.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch used to draw the log on the screen.</param>
+        /// <param name="logRectangle">The rectangle in which to show the log.</param>
+        /// <param name="spriteFont">The Message Log font.</param>
+        public MessageLog(Rectangle logRectangle, SpriteFont spriteFont)
         {
-            this.spriteBatch = spriteBatch;
             this.rectangle = logRectangle;
             this.spriteFont = spriteFont;
+
+            spaceScreenWidth = this.TextScreenLength(" ");
 
             // Default text color
             this.textColor = Color.Gray;
@@ -48,13 +59,13 @@ namespace RLG.R3_CANASUViGHi.Models
             this.lines = new StringBuilder[lineCount];
             this.lineVectors = new Vector2[lineCount];
 
-            // Initialize line coordinates, from bottom [0] to top [Length - 1].
+            // Initialize line coordinates, from bottom [0], to top [Length - 1].
             for (int i = 0; i < lineCount; i++)
             {
                 this.lines[i] = new StringBuilder();
 
                 this.lineVectors[i] = new Vector2(
-                    this.rectangle.Left + Padding,
+                    this.rectangle.Left + TextLeftPad,
                     this.rectangle.Bottom - i * this.FontHeight);
             }
         }
@@ -83,52 +94,56 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <returns>True if the message was sent successfuly, false otherwise.</returns>
         public bool SendMessage(string text)
         {
-            if (this.TextLengthOnScreen(new StringBuilder(text)) <= this.rectangle.Width)
+            // Check if the text sent fits in the message rectangle.
+            if (this.TextScreenLength(text) <= this.rectangle.Width)
             {
                 for (int i = this.lines.Length - 1; i > 0; i--)
                 {
                     lines[i].Clear();
-                    lines[i].Append(lines[i - 1]);  // + new string(' ', this.rectangle.Width - lines[i - 1].Length));
+                    lines[i].Append(lines[i - 1]);
                 }
 
                 lines[0].Clear();
                 lines[0].Append(text);
 
-                // PrintMessageLog();
+                // Save log to a file
+                // WriteLogFile(text);
 
                 return true;
-                // WriteLogFile(text);     //make log file save on game save instead of every message?
             }
             else
             {
+                // The text line is too long, split in several lines.
                 string[] splitText = text.Split(' ');
-                int firstUnappendedString = 0;
-                StringBuilder firstPartText = new StringBuilder();
+                int nextUnappanededString = 0;
+                StringBuilder textFirstPart = new StringBuilder();
 
-                for (int i = firstUnappendedString; i < splitText.Length; i++)
+                for (int i = nextUnappanededString; i < splitText.Length; i++)
                 {
-                    int textLength = this.TextLengthOnScreen(firstPartText) + this.TextLengthOnScreen(splitText[i]);
+                    int textLength = TextLeftPad + this.TextScreenLength(textFirstPart) + this.TextScreenLength(splitText[i]);
 
-                    if (!(textLength > this.rectangle.Width))
+                    if (textLength + this.spaceScreenWidth < this.rectangle.Width)
                     {
-                        firstPartText.Append(splitText[i]);
-                        firstPartText.Append(" ");
+                        textFirstPart.Append(splitText[i]);
+                        textFirstPart.Append(" ");
                     }
                     else
                     {
-                        firstUnappendedString = i;
+                        nextUnappanededString = i;
                         break;
                     }
                 }
 
-                StringBuilder secondPartText = new StringBuilder();
-                for (int i = firstUnappendedString; i < splitText.Length; i++)
+                StringBuilder textSecondPart = new StringBuilder();
+                for (int i = nextUnappanededString; i < splitText.Length; i++)
                 {
-                    secondPartText.AppendFormat("{0} ", splitText[i]);
+                    textSecondPart.Append(splitText[i]);
+                    textSecondPart.Append(" ");
                 }
 
-                SendMessage(firstPartText.ToString());
-                SendMessage(secondPartText.ToString());
+                // Recursively send splitted messages.
+                SendMessage(textFirstPart.ToString());
+                SendMessage(textSecondPart.ToString());
             }
 
             return false;
@@ -157,6 +172,7 @@ namespace RLG.R3_CANASUViGHi.Models
             for (int i = 0; i < lines.Length; i++)
             {
                 #region Colored string draw
+
                 int linePosition = 0;
                 string workText = lines[i].ToString();
                 char selector = '\0';
@@ -232,9 +248,9 @@ namespace RLG.R3_CANASUViGHi.Models
                             lineVectors[i].Y);
 
                         // Set the line position for the next string.
-                        linePosition += this.TextLengthOnScreen(selectedText);
+                        linePosition += this.TextScreenLength(selectedText);
 
-                        this.spriteBatch.DrawString(
+                        spriteBatch.DrawString(
                             this.spriteFont,
                             selectedText,
                             newPosition,
@@ -255,7 +271,7 @@ namespace RLG.R3_CANASUViGHi.Models
                             newPosition,
                             this.textColor);
 
-                        linePosition += this.TextLengthOnScreen(this.lines[i][k].ToString());
+                        linePosition += this.TextScreenLength(this.lines[i][k].ToString());
                     }
                 }
                 #endregion
@@ -269,7 +285,7 @@ namespace RLG.R3_CANASUViGHi.Models
         /// </summary>
         /// <param name="text">The string text.</param>
         /// <returns>Length of the text drawn on the screen, using this SpriteFont.</returns>
-        private int TextLengthOnScreen(string text)
+        private int TextScreenLength(string text)
         {
             return (int)this.spriteFont.MeasureString(this.RemoveColorSeq(text)).X;
         }
@@ -279,15 +295,16 @@ namespace RLG.R3_CANASUViGHi.Models
         /// </summary>
         /// <param name="text">The StringBuilder text.</param>
         /// <returns>Length of the text drawn on the screen, using this SpriteFont.</returns>
-        private int TextLengthOnScreen(StringBuilder text)
+        private int TextScreenLength(StringBuilder text)
         {
-            return this.TextLengthOnScreen(text.ToString());
+            return this.TextScreenLength(text.ToString());
         }
 
         private string RemoveColorSeq(string text, bool breakOnSequence = false)
         {
             bool skip = false;
             StringBuilder actualText = new StringBuilder();
+
             for (int i = 0; i < text.Length; i++)
             {
                 if (text[i] == '~')
@@ -298,8 +315,12 @@ namespace RLG.R3_CANASUViGHi.Models
                     }
 
                     skip = true;
+                    i += 13;
                 }
 
+                actualText.Append(text[i]);
+
+                /* *
                 if (!skip)
                 {
                     actualText.Append(text[i]);
@@ -311,6 +332,7 @@ namespace RLG.R3_CANASUViGHi.Models
                         skip = false;
                     }
                 }
+                 * */
             }
 
             return actualText.ToString();
