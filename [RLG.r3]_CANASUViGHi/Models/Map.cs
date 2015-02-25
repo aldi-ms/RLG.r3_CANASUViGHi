@@ -34,6 +34,9 @@ namespace RLG.R3_CANASUViGHi.Models
     internal sealed class Map<T> : GameObject, IMap<T>
         where T : ITile
     {
+
+        private static readonly Color TileMask = Color.Gray;
+
         private Point viewBoxTileSize;
         private FieldOfView<T> fieldOfView;
 
@@ -179,11 +182,11 @@ namespace RLG.R3_CANASUViGHi.Models
                     }
                     else if (this[tile].Flags.HasFlag(Flags.HasBeenSeen))
                     {
-                        spriteBatch.Draw(this[tile].Terrain.Texture, drawPosition, Color.DarkGray);
+                        spriteBatch.Draw(this[tile].Terrain.Texture, drawPosition, TileMask);
 
                         if (this[tile].Fringe != null)
                         {
-                            spriteBatch.Draw(this[tile].Fringe.Texture, drawPosition);
+                            spriteBatch.Draw(this[tile].Fringe.Texture, drawPosition, TileMask);
                         }
                     }
                 }
@@ -212,17 +215,21 @@ namespace RLG.R3_CANASUViGHi.Models
             if (this[p].Flags.HasFlag(Flags.IsBlocked) || 
                 this[p].Terrain.MovementCost <= 0)
             {
-                blocking = "none";
+                blocking = "the void.";
 
                 if (this[p].Actor != null &&
                     this[p].Actor.Flags.HasFlag(Flags.IsBlocked))
                 {
-                    blocking = string.Format("a {0}", this[p].Actor.Name);
+                    blocking = string.Format("a {0}!", this[p].Actor.Name);
                 }
                 else if (this[p].Fringe != null && 
                     this[p].Fringe.Flags.HasFlag(Flags.IsBlocked))
                 {
-                    blocking = string.Format("a {0}", this[p].Fringe.Name);
+                    blocking = string.Format("a {0}.", this[p].Fringe.Name);
+                }
+                else
+                {
+                    blocking = string.Format("a {0}.", this[p].Terrain.Name);
                 }
 
                 return false;

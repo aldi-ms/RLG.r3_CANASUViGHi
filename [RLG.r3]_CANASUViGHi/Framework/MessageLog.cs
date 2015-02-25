@@ -20,6 +20,7 @@ namespace RLG.R3_CANASUViGHi.Framework
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Framework;
     using RLG.R3_CANASUViGHi.Interfaces;
     using System;
@@ -151,6 +152,54 @@ namespace RLG.R3_CANASUViGHi.Framework
         }
 
         /// <summary>
+        /// Implements the ISoundReceiver interface, sending sounds to the log.
+        /// </summary>
+        /// <param name="sound">The Sound object to send to the log.</param>
+        public void ReceiveSound(ISound sound)
+        {
+            Color soundColor = Color.DarkGray;
+            StringBuilder soundCreated = new StringBuilder();
+            soundCreated.AppendFormat("{0} ", (sound.Source as IGameObject).Name);
+
+            switch (sound.Type)
+            {
+                case SoundType.Say:
+                    {
+                        soundCreated.Append("says: ");
+                        soundColor = Color.Gray;
+                    }
+                    break;
+
+                case SoundType.Yell:
+                    {
+                        soundCreated.Append("yells: ");
+                        soundColor = Color.Red;
+                    }
+                    break;
+
+                case SoundType.Bump:
+                    {
+                        soundCreated.Append("bumps into ");
+                    }
+                    break;
+
+                case SoundType.Hit:
+                    {
+                        soundCreated.Append("hits ");
+                        soundColor = Color.OrangeRed;
+                    }
+                    break;
+            }
+
+            soundCreated.Append(sound.StringValue);
+
+            string colorSequence = string.Format("~S{0}!", soundColor.ToUInt());
+            soundCreated.Insert(0, colorSequence);
+
+            this.SendMessage(soundCreated.ToString());
+        }
+
+        /// <summary>
         /// Clear the log line content.
         /// </summary>
         public void ClearLog()
@@ -259,15 +308,15 @@ namespace RLG.R3_CANASUViGHi.Framework
                             lineVectors[i].Y);
 
                         // Set the line position for the next string.
-                        linePosition += this.TextScreenLength(selectedText);
+                        linePosition += this.TextScreenLength(this.RemoveColorSeq(selectedText, true));
 
                         spriteBatch.DrawString(
                             this.spriteFont,
-                            selectedText,
+                            this.RemoveColorSeq(selectedText),
                             newPosition,
                             parsedColor);
 
-                        k += selectedText.Length;
+                        k += this.RemoveColorSeq(selectedText, true).Length;
                     }
                     else
                     {
@@ -310,6 +359,13 @@ namespace RLG.R3_CANASUViGHi.Framework
             return this.TextScreenLength(text.ToString());
         }
 
+        /// <summary>
+        /// Remove color sequences existant in a string.
+        /// </summary>
+        /// <param name="text">The string to check.</param>
+        /// <param name="breakOnSequence">Indicates whether we should break on 
+        /// sequence start and return the string up to this point.</param>
+        /// <returns>A string cleared from color sequence codes.</returns>
         private string RemoveColorSeq(string text, bool breakOnSequence = false)
         {
             StringBuilder actualText = new StringBuilder();
@@ -327,20 +383,6 @@ namespace RLG.R3_CANASUViGHi.Framework
                 }
 
                 actualText.Append(text[i]);
-
-                /* *
-                if (!skip)
-                {
-                    actualText.Append(text[i]);
-                }
-                else
-                {
-                    if (text[i] == '!')
-                    {
-                        skip = false;
-                    }
-                }
-                 * */
             }
 
             return actualText.ToString();

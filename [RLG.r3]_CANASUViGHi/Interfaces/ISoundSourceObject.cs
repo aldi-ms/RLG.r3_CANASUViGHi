@@ -18,37 +18,26 @@
 
 namespace RLG.R3_CANASUViGHi.Interfaces
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
-    using RLG.R3_CANASUViGHi.Framework;
+    using RLG.R3_CANASUViGHi.Enums;
 
     /// <summary>
-    /// Interface for the Message Log, implementing ISoundReceiver as well.
+    /// Interface for sound source objects.
     /// </summary>
-    internal interface IMessageLog : ISoundReceiver
+    /// <typeparam name="T">Type of object, which should implement
+    /// <see cref="IGameObject"/></typeparam>
+    internal interface ISoundSourceObject<T>
+        where T : IGameObject
     {
         /// <summary>
-        /// Gets or sets the color of the text in the log.
+        /// Gets the Sound Receiver object for the Actor.
         /// </summary>
-        Color TextColor { get; set; }
+        ISoundReceiver SoundReceiver { get; set; }
 
         /// <summary>
-        /// Send a message to the log to be displayed.
+        /// Make a sound, and send it to the SoundReceiver.
         /// </summary>
-        /// <param name="text">String text message.</param>
-        /// <returns>Indicates whether the message was successfuly shown.</returns>
-        bool SendMessage(string text);
-
-        /// <summary>
-        /// Draw the log on the screen.
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch used to draw the log.</param>
-        void Draw(SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Clear the log.
-        /// </summary>
-        void ClearLog();
+        /// <param name="soundType">Type of sound.</param>
+        /// <param name="sound">The sound's string representation.</param>
+        void MakeSound(SoundType soundType, string sound);
     }
 }

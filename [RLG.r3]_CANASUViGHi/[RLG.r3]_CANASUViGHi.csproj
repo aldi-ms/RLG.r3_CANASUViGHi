@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\SoundType.cs" />
     <Compile Include="Framework\CardinalDirectionExtensions.cs" />
     <Compile Include="Framework\ColorExtensions.cs" />
     <Compile Include="Framework\FieldOfView\FieldOfView.cs" />
@@ -64,12 +65,17 @@
     <Compile Include="Interfaces\IGameObject.cs" />
     <Compile Include="Interfaces\IMap.cs" />
     <Compile Include="Interfaces\IMessageLog.cs" />
+    <Compile Include="Interfaces\ISound.cs" />
+    <Compile Include="Interfaces\ISoundReceiver.cs" />
+    <Compile Include="Interfaces\ISoundSourceObject.cs" />
     <Compile Include="Interfaces\ITerrain.cs" />
     <Compile Include="Interfaces\ITile.cs" />
     <Compile Include="Models\Fringe.cs" />
     <Compile Include="Models\GameObject.cs" />
     <Compile Include="Models\Map.cs" />
     <Compile Include="Framework\MessageLog.cs" />
+    <Compile Include="Models\Sound.cs" />
+    <Compile Include="Models\SoundSourceObject.cs" />
     <Compile Include="Models\Terrain.cs" />
     <Compile Include="Models\Tile.cs" />
     <Compile Include="Models\Actor.cs" />

@@ -40,6 +40,21 @@
  IFringe Fringe { get; set; } to use the new IFringe interface.
  Corresponding changes made to the class Tile.
 
+* Implemented a "sound" system for the game. Objects implementing 
+ abstract class SoundSourceObject : GameObject, ISoundSource can create
+ a Sound : ISound object through MakeSound(...) and send it to the 
+ SoundReceiver (implemented by the IMessageLog interface now). In order
+ to use the sound system you should assign SoundReceiver object to
+ SoundSourceObject.SoundReceiver.
+
+* As a result of the sound system, class Actor now implements abstract
+  class SoundSourceObject : GameObject (changed from : GameObject).
+
+* The Actor now makes sounds on spawn/bumping in blocked Tiles.
+
+* Added field static readonly Color TileMask to class Models\Map to use 
+ for masking Tiles that have Flag.HasBeenSeen.
+
 
 * * *
 * 24.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>

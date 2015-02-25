@@ -16,39 +16,31 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Enums
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
-    using RLG.R3_CANASUViGHi.Framework;
-
     /// <summary>
-    /// Interface for the Message Log, implementing ISoundReceiver as well.
+    /// Enumerates the types of sound that exist in the game.
     /// </summary>
-    internal interface IMessageLog : ISoundReceiver
+    internal enum SoundType
     {
         /// <summary>
-        /// Gets or sets the color of the text in the log.
+        /// ... says...
         /// </summary>
-        Color TextColor { get; set; }
+        Say,
 
         /// <summary>
-        /// Send a message to the log to be displayed.
+        /// ... yells...
         /// </summary>
-        /// <param name="text">String text message.</param>
-        /// <returns>Indicates whether the message was successfuly shown.</returns>
-        bool SendMessage(string text);
+        Yell,
+        
+        /// <summary>
+        /// ... bumps into...
+        /// </summary>
+        Bump,
 
         /// <summary>
-        /// Draw the log on the screen.
+        /// ... hits...
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch used to draw the log.</param>
-        void Draw(SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Clear the log.
-        /// </summary>
-        void ClearLog();
+        Hit
     }
 }

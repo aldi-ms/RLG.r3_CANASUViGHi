@@ -20,6 +20,7 @@ namespace RLG.R3_CANASUViGHi.Models
 {
     using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Interfaces;
+    using System;
 
     /// <summary>
     ///  Basic Map Tile implementation, keeps refences to the objects
@@ -28,6 +29,7 @@ namespace RLG.R3_CANASUViGHi.Models
     internal sealed class Tile : ITile
     {
         private Flags flags;
+        private ITerrain terrain;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tile" /> class.
@@ -50,7 +52,25 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <summary>
         /// Gets or sets the Terrain object in the Tile.
         /// </summary>
-        public ITerrain Terrain { get; set; }
+        public ITerrain Terrain
+        {
+            get 
+            { 
+                return this.terrain; 
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(
+                        "Tile.Terrain",
+                        "Tile Terrain cannot be null!");
+                }
+
+                this.terrain = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the Fringe object in the Tile.

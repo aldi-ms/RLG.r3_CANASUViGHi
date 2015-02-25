@@ -23,12 +23,13 @@ namespace RLG.R3_CANASUViGHi.Models
     using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Framework;
     using RLG.R3_CANASUViGHi.Interfaces;
+    using RLG.R3_CANASUViGHi.Models;
     using System;
 
     /// <summary>
     /// Information about a Game Actor.
     /// </summary>
-    internal sealed class Actor : GameObject, IActor
+    internal sealed class Actor : SoundSourceObject, IActor
     {
         private bool hasSpawned = false;
         private IMap<ITile> map;
@@ -101,6 +102,8 @@ namespace RLG.R3_CANASUViGHi.Models
                     this.map[this.Position].Actor = this;
                     this.hasSpawned = true;
 
+                    this.MakeSound(SoundType.Yell, "I'm here to kick some ass!!!");
+
                     return true;
                 }
             }
@@ -122,8 +125,8 @@ namespace RLG.R3_CANASUViGHi.Models
                     "Actor.map");
             }
 
-            Point newPosition = this.Position + direction.GetDeltaCoordinate();
             string block;
+            Point newPosition = this.Position + direction.GetDeltaCoordinate();
 
             if (this.map.CheckTile(newPosition, out block))
             {
@@ -134,8 +137,11 @@ namespace RLG.R3_CANASUViGHi.Models
 
                 return this.map[this.Position].Terrain.MovementCost;
             }
+            else if (!string.IsNullOrEmpty(block))
+            {
+                this.MakeSound(SoundType.Bump, block);
+            }
 
-            // Unsuccessful move, return 0.
             return 0;
         }
     }

@@ -206,7 +206,6 @@ namespace RLG.R3_CANASUViGHi.Engine
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.North);
                                     this.expectCommand = false;
-                                    this.messageLog.SendMessage("Actor move north");
                                     break;
                                 }
 
@@ -216,7 +215,6 @@ namespace RLG.R3_CANASUViGHi.Engine
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.South);
                                     this.expectCommand = false;
-                                    this.messageLog.SendMessage("Actor move south");
                                     break;
                                 }
 
@@ -225,7 +223,6 @@ namespace RLG.R3_CANASUViGHi.Engine
                             case Keys.Left:
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.West);
-                                    this.messageLog.SendMessage("Actor move west");
                                     this.expectCommand = false;
                                     break;
                                 }
@@ -235,7 +232,6 @@ namespace RLG.R3_CANASUViGHi.Engine
                             case Keys.Right:
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.East);
-                                    this.messageLog.SendMessage("Actor move east");
                                     this.expectCommand = false;
                                     break;
                                 }
@@ -244,9 +240,6 @@ namespace RLG.R3_CANASUViGHi.Engine
                             case Keys.Y:
                                 {
                                     actor.Energy -= this.playerActor.Move(CardinalDirection.NorthWest);
-
-                                    this.messageLog.SendMessage(
-                                        "Actor move northwest. This is a very long test message to check the Message Log correctness in splitting too long lines, that do not otherwise fit in the Message Log rectangle.");
                                     this.expectCommand = false;
                                     break;
                                 }
@@ -317,22 +310,35 @@ namespace RLG.R3_CANASUViGHi.Engine
         {
             string playerName = "SCiENiDE";
 
-            playerActor = new Actor(
+            // Create the Map.
+            this.testMap = new Map<ITile>(
+                Framework.Tools.GenerateMap(new Point(30, 30)),
+                0,
+                "Testing Grounds");
+            this.testMap.ViewBoxTileCount = new Point(24, 15);
+
+            // Create the Message Log.
+            Rectangle logRect = new Rectangle(
+                0,
+                this.testMap.ViewBoxTileCount.Y * Sprite.TileSize,
+                this.testMap.ViewBoxTileCount.X * Sprite.TileSize,
+                (ScreenHeight - 30) - this.testMap.ViewBoxTileCount.Y * Sprite.TileSize);
+
+            this.messageLog = new MessageLog(logRect, this.testFont);
+
+            // Create the player Actor.
+            this.playerActor = new Actor(
                 0,
                 playerName, 
                 0,
                 11, 
                 Sprite.Player.HumanM,
-                Enums.Flags.IsPlayerControl);
+                Flags.IsPlayerControl);
+
+            (this.playerActor as SoundSourceObject).SoundReceiver = this.messageLog;
 
             this.actorQueue.Add(playerActor);
-
-            this.testMap = new Map<ITile>(
-                Framework.Tools.GenerateMap(new Point(30, 30)),
-                0, 
-                "Testing Grounds");
-            this.testMap.ViewBoxTileCount = new Point(24, 15);
-
+            
             bool outerBreak = false;
             for (int x = 0; x < 10; x++)
             {
@@ -347,23 +353,18 @@ namespace RLG.R3_CANASUViGHi.Engine
                 }
 
                 if (outerBreak) { break; }
-            }            
+            }
 
-            Rectangle logRect = new Rectangle(
-                0,
-                this.testMap.ViewBoxTileCount.Y * Sprite.TileSize,
-                this.testMap.ViewBoxTileCount.X * Sprite.TileSize,
-                (ScreenHeight - 30) - this.testMap.ViewBoxTileCount.Y * Sprite.TileSize);
-
-            this.messageLog = new MessageLog(logRect, this.testFont);
-            string greet = string.Format("~w{0}!Message ~W{1}!log ~l{2}!i~l{3}!n~s{4}!itialized. ~w{5}!Greetings!",
+            string greeting = string.Format(
+                "~w{0}!Message ~W{1}!log ~l{2}!i~l{3}!n~s{4}!itialized. ~s{5}!Greetings!",
                 Color.CornflowerBlue.ToUInt(),
                 Color.Crimson.ToUInt(),
-                Color.White.ToUInt(), 
+                Color.White.ToUInt(),
                 Color.BurlyWood.ToUInt(),
                 Color.LawnGreen.ToUInt(),
-                Color.IndianRed.ToUInt());
-            this.messageLog.SendMessage(greet);
+                Color.LightGreen.ToUInt());
+            
+            this.messageLog.SendMessage(greeting);
 
             // Indicate that we are currently in game.
             inGame = true;

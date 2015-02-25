@@ -18,37 +18,26 @@
 
 namespace RLG.R3_CANASUViGHi.Interfaces
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
-    using RLG.R3_CANASUViGHi.Framework;
+    using RLG.R3_CANASUViGHi.Enums;
 
     /// <summary>
-    /// Interface for the Message Log, implementing ISoundReceiver as well.
+    /// Interface for the game sound system.
     /// </summary>
-    internal interface IMessageLog : ISoundReceiver
-    {
+    internal interface ISound
+    {  
         /// <summary>
-        /// Gets or sets the color of the text in the log.
+        /// The object, source of the sound.
         /// </summary>
-        Color TextColor { get; set; }
+        ISoundSourceObject<IGameObject> Source { get; }
 
         /// <summary>
-        /// Send a message to the log to be displayed.
+        /// Gets the Sound Type.
         /// </summary>
-        /// <param name="text">String text message.</param>
-        /// <returns>Indicates whether the message was successfuly shown.</returns>
-        bool SendMessage(string text);
+        SoundType Type { get; }
 
         /// <summary>
-        /// Draw the log on the screen.
+        /// Gets the string representation of the sound.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch used to draw the log.</param>
-        void Draw(SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Clear the log.
-        /// </summary>
-        void ClearLog();
+        string StringValue { get; }
     }
 }
