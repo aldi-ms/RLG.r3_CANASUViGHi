@@ -69,7 +69,7 @@ namespace RLG.R3_CANASUViGHi.Framework
                         }
                         else
                         {
-                            resultTiles[x, y] = new Tile(nonBlockedTerrain, tree, 0, null);
+                            resultTiles[x, y] = new Tile(nonBlockedTerrain, 0, null, tree);
                         }
                     }
                     else
@@ -98,7 +98,7 @@ namespace RLG.R3_CANASUViGHi.Framework
         /// <returns>An object implementing IActor.</returns>
         public static IActor GenerateMonster()
         {
-            return new Actor(1, "bot", 0, 8, Sprite.Monster.Rat, Flags.None);
+            return new Actor(1, "bot", 50, 10, Sprite.Monster.Rat, Flags.None);
         }
 
         // Given H,S,L in range of 0-1

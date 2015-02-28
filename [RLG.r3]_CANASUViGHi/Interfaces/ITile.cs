@@ -20,6 +20,7 @@ namespace RLG.R3_CANASUViGHi.Interfaces
 {
     using RLG.R3_CANASUViGHi.Framework.FieldOfView;
     using RLG.R3_CANASUViGHi.Enums;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interface for the Game Tile.
@@ -34,7 +35,7 @@ namespace RLG.R3_CANASUViGHi.Interfaces
         /// <summary>
         /// Gets or sets the Fringe element ID of the Tile.
         /// </summary>
-        IFringe Fringe { get; set; }
+        List<IFringe> FringeList { get; set; }
 
         /// <summary>
         /// Gets or sets the Item List ID of the Tile.

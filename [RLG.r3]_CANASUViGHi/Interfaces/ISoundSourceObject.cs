@@ -37,6 +37,8 @@ namespace RLG.R3_CANASUViGHi.Interfaces
         /// </summary>
         /// <param name="soundType">Type of sound.</param>
         /// <param name="sound">The sound's string representation.</param>
-        void MakeSound(SoundType soundType, string sound);
+        /// <returns>True if the sound was send successfuly, false otherwise
+        /// (e.g. SoundReceiver was not set beforehand).</returns>
+        bool MakeSound(SoundType soundType, string sound);
     }
 }

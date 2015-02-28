@@ -34,11 +34,15 @@ namespace RLG.R3_CANASUViGHi.Models
     internal sealed class Map<T> : GameObject, IMap<T>
         where T : ITile
     {
+        private const int
+            TopMargin = 10,
+            LeftMargin = 10;
 
         private static readonly Color TileMask = Color.Gray;
 
         private Point viewBoxTileSize;
         private FieldOfView<T> fieldOfView;
+        private Rectangle mapWindow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Map" /> class.
@@ -55,6 +59,12 @@ namespace RLG.R3_CANASUViGHi.Models
             this.Tiles = tiles;
             this.ViewBoxTileCount = viewBoxTileSize;
             this.fieldOfView = new FieldOfView<T>(this.Tiles);
+
+            Rectangle mapWindow = new Rectangle(
+                LeftMargin,
+                TopMargin,
+                this.ViewBoxTileCount.X * Sprite.TileSize,
+                this.ViewBoxTileCount.Y * Sprite.TileSize);
         }
 
         /// <summary>
@@ -102,7 +112,10 @@ namespace RLG.R3_CANASUViGHi.Models
         /// </summary>
         public Point ViewBoxTileCount
         {
-            get { return this.viewBoxTileSize; }
+            get
+            {
+                return this.viewBoxTileSize; 
+            }
 
             set
             {
@@ -111,10 +124,16 @@ namespace RLG.R3_CANASUViGHi.Models
                 {
                     throw new ArgumentException(
                         "Map view-box is out of Screen bounds!",
-                        "viewBoxTileSize");
+                        "Map.ViewBoxTileSize");
                 }
 
                 this.viewBoxTileSize = value;
+
+                this.mapWindow = new Rectangle(
+                    LeftMargin,
+                    TopMargin,
+                    this.ViewBoxTileCount.X * Sprite.TileSize,
+                    this.ViewBoxTileCount.Y * Sprite.TileSize);
             }
         }
         #endregion
@@ -140,6 +159,7 @@ namespace RLG.R3_CANASUViGHi.Models
             {
                 startTile.X = 0;
             }
+
             if (startTile.Y < 0)
             {
                 startTile.Y = 0;
@@ -160,7 +180,7 @@ namespace RLG.R3_CANASUViGHi.Models
             {
                 for (int y = 0; y < this.ViewBoxTileCount.Y; y++)
                 {
-                    Vector2 drawPosition = new Vector2(10 + (Sprite.TileSize * x), 10 + (Sprite.TileSize * y));
+                    Vector2 drawPosition = new Vector2(LeftMargin + (Sprite.TileSize * x), TopMargin + (Sprite.TileSize * y));
                     Point tile = new Point(startTile.X + x, startTile.Y + y);
 
                     if (this[tile].IsVisible)
@@ -170,9 +190,12 @@ namespace RLG.R3_CANASUViGHi.Models
                         // Draw the Terrain first as it exists for every Tile.
                         spriteBatch.Draw(this[tile].Terrain.Texture, drawPosition);
 
-                        if (this[tile].Fringe != null)
+                        if (this[tile].FringeList.Count > 0)
                         {
-                            spriteBatch.Draw(this[tile].Fringe.Texture, drawPosition);
+                            foreach (IFringe fringe in this[tile].FringeList)
+                            {
+                                spriteBatch.Draw(fringe.Texture, drawPosition);                                
+                            }
                         }
 
                         if (this[tile].Actor != null)
@@ -184,9 +207,12 @@ namespace RLG.R3_CANASUViGHi.Models
                     {
                         spriteBatch.Draw(this[tile].Terrain.Texture, drawPosition, TileMask);
 
-                        if (this[tile].Fringe != null)
+                        if (this[tile].FringeList.Count > 0)
                         {
-                            spriteBatch.Draw(this[tile].Fringe.Texture, drawPosition, TileMask);
+                            foreach (IFringe fringe in this[tile].FringeList)
+                            {
+                                spriteBatch.Draw(fringe.Texture, drawPosition, TileMask);
+                            }
                         }
                     }
                 }
@@ -222,10 +248,15 @@ namespace RLG.R3_CANASUViGHi.Models
                 {
                     blocking = string.Format("a {0}!", this[p].Actor.Name);
                 }
-                else if (this[p].Fringe != null && 
-                    this[p].Fringe.Flags.HasFlag(Flags.IsBlocked))
+                else if (this[p].FringeList.Count > 0)
                 {
-                    blocking = string.Format("a {0}.", this[p].Fringe.Name);
+                    foreach (IFringe fringe in this[p].FringeList)
+                    {
+                        if (fringe.Flags.HasFlag(Flags.IsBlocked))
+                        {
+                            blocking = string.Format("a {0}", fringe.Name);
+                        }
+                    }
                 }
                 else
                 {
@@ -237,6 +268,31 @@ namespace RLG.R3_CANASUViGHi.Models
 
             blocking = null;
             return true;
+        }
+
+        /// <summary>
+        /// Get the Tile at the given window coordinates.
+        /// </summary>
+        /// <param name="position">Window coordinates.</param>
+        /// <returns>The Tile object on these coordinates, or null if non-existent.</returns>
+        public ITile GetTileAtWindowCoordinates(Point position)
+        {
+            if (position.X < this.mapWindow.Left || position.X > this.mapWindow.Right || 
+                position.Y < this.mapWindow.Top || position.Y > this.mapWindow.Bottom)
+            {
+                return null;
+            }
+
+            Point tile = new Point(
+                (position.X - LeftMargin) / Sprite.TileSize,
+                (position.Y - TopMargin) / Sprite.TileSize);
+
+            if (this[tile].IsVisible)
+            {
+                return this[tile];
+            }
+
+            return null;
         }
     }
 }

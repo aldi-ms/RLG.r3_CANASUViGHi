@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\SoundType.cs" />
+    <Compile Include="Framework\Buffer.cs" />
     <Compile Include="Framework\CardinalDirectionExtensions.cs" />
     <Compile Include="Framework\ColorExtensions.cs" />
     <Compile Include="Framework\FieldOfView\FieldOfView.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Enums\Flags.cs" />
     <Compile Include="Framework\FlatArray.cs" />
     <Compile Include="Framework\KeyboardBuffer.cs" />
+    <Compile Include="Framework\MouseHelp.cs" />
     <Compile Include="Framework\PriorityQueue.cs" />
     <Compile Include="Framework\Tools.cs" />
     <Compile Include="GameData\Sprites\FloorSprites.cs" />

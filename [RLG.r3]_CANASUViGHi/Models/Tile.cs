@@ -21,6 +21,7 @@ namespace RLG.R3_CANASUViGHi.Models
     using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Interfaces;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     ///  Basic Map Tile implementation, keeps refences to the objects
@@ -30,23 +31,37 @@ namespace RLG.R3_CANASUViGHi.Models
     {
         private Flags flags;
         private ITerrain terrain;
+        private List<IFringe> fringeList;
 
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="Tile" /> class.
         /// </summary>
         /// <param name="terrain">Terrain object.</param>
-        /// <param name="fringe">Fringe object.</param>
+        /// <param name="fringe">List of Fringe objects.</param>
         /// <param name="itemList">to be implemented...</param>
         /// <param name="actor">Actor object.</param>
-        public Tile(ITerrain terrain, IFringe fringe, int itemList, IActor actor) 
+        public Tile(ITerrain terrain, List<IFringe> fringe, int itemList, IActor actor) 
         {
             this.Terrain = terrain;
-            this.Fringe = fringe;
+            this.FringeList = fringe;
             this.Actor = actor;
 
             // Set flags to cumulative from other flags (see Flags)
             this.Flags = Flags.None;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Tile" /> class.
+        /// </summary>
+        /// <param name="terrain">Terrain object.</param>
+        /// <param name="itemList">to be implemented...</param>
+        /// <param name="actor">Actor object.</param>
+        /// <param name="fringe">Parameterized Fringe objects.</param>
+        public Tile(ITerrain terrain, int itemList, IActor actor, params IFringe[] fringe)
+            :this(terrain,  new List<IFringe>(fringe), itemList, actor)
+        { }
+        #endregion
 
         #region Properties
         /// <summary>
@@ -75,7 +90,25 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <summary>
         /// Gets or sets the Fringe object in the Tile.
         /// </summary>
-        public IFringe Fringe { get; set; }
+        public List<IFringe> FringeList 
+        {
+            get
+            { 
+                return this.fringeList;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    this.fringeList = new List<IFringe>();
+                }
+                else
+                {
+                    this.fringeList = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the Item List in the Tile.
@@ -93,7 +126,10 @@ namespace RLG.R3_CANASUViGHi.Models
         /// <remarks>Uses Flags.IsVisible.</remarks>
         public bool IsVisible
         {
-            get { return this.Flags.HasFlag(Flags.IsVisible); }
+            get 
+            { 
+                return this.Flags.HasFlag(Flags.IsVisible); 
+            }
 
             set 
             {
@@ -149,9 +185,12 @@ namespace RLG.R3_CANASUViGHi.Models
                     cumulativeFlags |= this.Actor.Flags;
                 }
 
-                if (this.Fringe != null)
+                if (this.FringeList.Count > 0)
                 {
-                    cumulativeFlags |= this.Fringe.Flags;
+                    foreach (IFringe fringe in this.FringeList)
+                    {
+                        cumulativeFlags |= fringe.Flags;
+                    }
                 }
 
                 return cumulativeFlags;

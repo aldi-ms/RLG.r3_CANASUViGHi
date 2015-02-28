@@ -3,6 +3,31 @@
 * * * * *
 
 * * *
+* 28.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+
+* Added class MouseHelp to update the mouse position / ButtonState
+ and easily access them.
+
+* Added class Buffer<T> - a generic FIFO collection (First In, First
+ Out) buffer implementation.
+
+* KeyboardBuffer now implements Buffer<Keys> instead of itself defining
+ a collection.
+
+* Added method ITile GetTileAtWindowCoordinates(Point position) to IMap
+ to return a Tile at given window coordinates.
+
+* Method bool MakeSound(...) return type changed to boolean instead of
+ void. This shows if the sound was sent successfully to the Receiver,
+ and the method no longer throws an exception when the SoundReceiver has
+ not been set on calling the method (instead it terminates with false).
+
+* ITile/Tile structure has been changed to contain a list of fringe
+ objects, instead of just one. We still cannot put more than one blocking
+ object.
+
+
+* * *
 * 26.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * Added method static Color HSL2RGB(double h, double sl, double l) to

@@ -49,11 +49,13 @@ namespace RLG.R3_CANASUViGHi.Models
         /// </summary>
         /// <param name="soundType">Type of sound.</param>
         /// <param name="sound">The sound string representation.</param>
-        public void MakeSound(SoundType soundType, string sound)
+        /// <returns>True if the sound was send successfuly, false otherwise
+        /// (e.g. SoundReceiver was not set beforehand).</returns>
+        public bool MakeSound(SoundType soundType, string sound)
         {
             if (SoundReceiver == null)
             {
-                throw new ArgumentNullException("SoundSource.SoundReceiver cannot be null when calling method MakeSound.");
+                return false;
             }
 
             ISound madeSound = new Sound(
@@ -62,6 +64,8 @@ namespace RLG.R3_CANASUViGHi.Models
                 sound);
 
             this.SoundReceiver.ReceiveSound(madeSound);
+
+            return true;
         }
     }
 }

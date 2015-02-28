@@ -26,6 +26,7 @@ namespace RLG.R3_CANASUViGHi.Engine
     using RLG.R3_CANASUViGHi.GameData;
     using RLG.R3_CANASUViGHi.Models;
     using RLG.R3_CANASUViGHi.Interfaces;
+    using System.Text;
 
     /// <summary>
     /// This is the main type for your game
@@ -53,7 +54,8 @@ namespace RLG.R3_CANASUViGHi.Engine
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private KeyboardBuffer keyboardBuffer;
-        private Map<ITile> testMap;
+        private MouseHelp mouse;
+        private IMap<ITile> testMap;
         private IActor playerActor;
         private PriorityQueue<IActor> actorQueue;
         private IMessageLog messageLog;
@@ -84,6 +86,7 @@ namespace RLG.R3_CANASUViGHi.Engine
             this.graphics.ApplyChanges();
 
             this.keyboardBuffer = new KeyboardBuffer();
+            this.mouse = new MouseHelp();
             this.actorQueue = new PriorityQueue<IActor>();
 
             base.Initialize();
@@ -119,9 +122,48 @@ namespace RLG.R3_CANASUViGHi.Engine
         protected override void Update(GameTime gameTime)
         {
             this.keyboardBuffer.Update();
+            this.mouse.Update();
 
-            #region Energy-Independent Commands
-            Keys key = this.keyboardBuffer.PopKey();
+            #region Energy-independent mouse input
+            if (this.mouse.LeftButton)
+            {
+                ITile tileRef =
+                    this.testMap.GetTileAtWindowCoordinates(this.mouse.Position);
+
+                if (tileRef != null)
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    if (tileRef.Actor != null)
+                    {
+                        sb.Append(tileRef.Actor.Name);
+                    }
+                    //else if (tileRef.ItemList.Count > 0)
+                    //{
+                    //    
+                    //}
+                    else if (tileRef.FringeList.Count > 0)
+                    {
+                        sb.AppendFormat("a {0}", tileRef.FringeList[0].Name);
+
+                        for (int i = 1; i < tileRef.FringeList.Count; i++)
+                        {
+                            sb.AppendFormat(", a {0}", tileRef.FringeList[i].Name);
+                        }
+                    }
+                    else
+                    {
+                        sb.AppendFormat("the {0}", tileRef.Terrain.Name);
+                    }
+
+                    this.messageLog.SendMessage(
+                        string.Format("You see here {0}.", sb));
+                }
+            }
+            #endregion
+
+            #region Energy-independent keyboard input
+            Keys key = this.keyboardBuffer.Dequeue();
             switch (key)
             {
                 case Keys.Escape:
@@ -175,9 +217,9 @@ namespace RLG.R3_CANASUViGHi.Engine
 
                 default:
                     {
-                        // The key is not a energy-independent command,
+                        // The key is not an energy-independent command,
                         // return it to the buffer!
-                        this.keyboardBuffer.PushKey(key);
+                        this.keyboardBuffer.Enqueue(key);
                         break;
                     }
             }
@@ -187,7 +229,7 @@ namespace RLG.R3_CANASUViGHi.Engine
             {
                 actorQueue.AccumulateEnergy();
             }
-            
+
             foreach (IActor actor in actorQueue)
             {
                 if (actor.Energy >= MinTurnCost)
@@ -197,9 +239,9 @@ namespace RLG.R3_CANASUViGHi.Engine
                         // Actor is player controlled, wait for input command
                         this.expectCommand = true;
 
-                        switch (this.keyboardBuffer.PopKey())
+                        switch (this.keyboardBuffer.Dequeue())
                         {
-                            #region Energy-Dependent Commands
+                            #region Energy-dependent keyboard input
                             case Keys.NumPad8:
                             case Keys.K:
                             case Keys.Up:
