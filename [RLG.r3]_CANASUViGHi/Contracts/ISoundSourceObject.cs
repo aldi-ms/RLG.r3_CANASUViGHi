@@ -16,7 +16,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Contracts
 {
     using RLG.R3_CANASUViGHi.Enums;
 
@@ -28,7 +28,7 @@ namespace RLG.R3_CANASUViGHi.Interfaces
     internal interface ISoundSourceObject : IGameObject
     {
         /// <summary>
-        /// Gets the Sound Receiver object for the Actor.
+        /// Gets or sets the Sound Receiver object.
         /// </summary>
         ISoundReceiver SoundReceiver { get; set; }
 

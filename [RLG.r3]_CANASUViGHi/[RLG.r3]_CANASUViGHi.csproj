@@ -38,6 +38,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IInventory.cs" />
+    <Compile Include="Contracts\IItemContainer.cs" />
+    <Compile Include="Entities\Inventory.cs" />
+    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\ItemContainer.cs" />
     <Compile Include="Enums\SoundType.cs" />
     <Compile Include="Framework\Buffer.cs" />
     <Compile Include="Framework\CardinalDirectionExtensions.cs" />
@@ -59,28 +64,30 @@
     <Compile Include="GameData\Sprites\PlayerSprites.cs" />
     <Compile Include="GameData\Sprite.cs" />
     <Compile Include="GameData\Sprites\MonsterSprites.cs" />
+    <Compile Include="GameData\Sprites\UISprites.cs" />
     <Compile Include="GameData\Sprites\WallSprites.cs" />
     <Compile Include="GameMain.cs" />
-    <Compile Include="Interfaces\IActor.cs" />
-    <Compile Include="Interfaces\IDrawable.cs" />
-    <Compile Include="Interfaces\IFringe.cs" />
-    <Compile Include="Interfaces\IGameObject.cs" />
-    <Compile Include="Interfaces\IMap.cs" />
-    <Compile Include="Interfaces\IMessageLog.cs" />
-    <Compile Include="Interfaces\ISound.cs" />
-    <Compile Include="Interfaces\ISoundReceiver.cs" />
-    <Compile Include="Interfaces\ISoundSourceObject.cs" />
-    <Compile Include="Interfaces\ITerrain.cs" />
-    <Compile Include="Interfaces\ITile.cs" />
-    <Compile Include="Models\Fringe.cs" />
-    <Compile Include="Models\GameObject.cs" />
-    <Compile Include="Models\Map.cs" />
+    <Compile Include="Contracts\IActor.cs" />
+    <Compile Include="Contracts\IDrawable.cs" />
+    <Compile Include="Contracts\IFringe.cs" />
+    <Compile Include="Contracts\IGameObject.cs" />
+    <Compile Include="Contracts\IItem.cs" />
+    <Compile Include="Contracts\IMap.cs" />
+    <Compile Include="Contracts\IMessageLog.cs" />
+    <Compile Include="Contracts\ISound.cs" />
+    <Compile Include="Contracts\ISoundReceiver.cs" />
+    <Compile Include="Contracts\ISoundSourceObject.cs" />
+    <Compile Include="Contracts\ITerrain.cs" />
+    <Compile Include="Contracts\ITile.cs" />
+    <Compile Include="Entities\Fringe.cs" />
+    <Compile Include="Entities\GameObject.cs" />
+    <Compile Include="Entities\Map.cs" />
     <Compile Include="Framework\MessageLog.cs" />
-    <Compile Include="Models\Sound.cs" />
-    <Compile Include="Models\SoundSourceObject.cs" />
-    <Compile Include="Models\Terrain.cs" />
-    <Compile Include="Models\Tile.cs" />
-    <Compile Include="Models\Actor.cs" />
+    <Compile Include="Entities\Sound.cs" />
+    <Compile Include="Entities\SoundSourceObject.cs" />
+    <Compile Include="Entities\Terrain.cs" />
+    <Compile Include="Entities\Tile.cs" />
+    <Compile Include="Entities\Actor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangeLog.txt" />
+    <Content Include="Content\misc\bag.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\tiles\dungeon\altars\dngn_altar.png" />
     <Content Include="Content\tiles\dungeon\altars\dngn_altar_beogh.png" />
     <Content Include="Content\tiles\dungeon\altars\dngn_altar_cheibriados_02.png" />
@@ -4030,7 +4040,7 @@
     <Content Include="Content\tiles\utility\Raw List.txt" />
     <Content Include="Content\tiles\utility\README.txt" />
     <Content Include="Icon.ico" />
-    <Content Include="Models\ColorMessages.txt" />
+    <Content Include="Entities\ColorMessages.txt" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

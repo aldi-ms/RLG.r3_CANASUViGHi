@@ -16,45 +16,45 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Entities
 {
-    using RLG.R3_CANASUViGHi.Framework.FieldOfView;
     using RLG.R3_CANASUViGHi.Enums;
-    using System.Collections.Generic;
+    using RLG.R3_CANASUViGHi.Contracts;
 
     /// <summary>
-    /// Interface for the Game Tile.
+    /// A sound object.
     /// </summary>
-    internal interface ITile : IFovCell
+    internal class Sound : ISound
     {
         /// <summary>
-        /// Gets or sets the Terrain ID of the Tile.
+        /// Initializes a new instance of the <see cref="Sound" /> class.
         /// </summary>
-        ITerrain Terrain { get; set; }
+        /// <param name="sourceObject">The source of the sound.</param>
+        /// <param name="soundType">Type of sound.</param>
+        /// <param name="sound">Sound string representation.</param>
+        public Sound(
+            ISoundSourceObject sourceObject,
+            SoundType soundType,
+            string sound)
+        {
+            this.Source = sourceObject;
+            this.Type = soundType;
+            this.StringValue = sound;
+        }
 
         /// <summary>
-        /// Gets or sets the Fringe element ID of the Tile.
+        /// Gets the sound source.
         /// </summary>
-        List<IFringe> FringeList { get; set; }
+        public ISoundSourceObject Source { get; private set; }
 
         /// <summary>
-        /// Gets or sets the Item List ID of the Tile.
+        /// Gets the sound type.
         /// </summary>
-        int ItemList { get; set; }
+        public SoundType Type { get; private set; }
 
         /// <summary>
-        /// Gets or sets the Actor of the Tile.
+        /// Gets the sound string representation.
         /// </summary>
-        IActor Actor { get; set; }
-
-        /// <summary>
-        /// Gets the (cumulative from other elements) Tile Flags.
-        /// </summary>
-        Flags Flags { get; set; }
-
-        /// <summary>
-        /// Clears the Tile specific Flags, and only them.
-        /// </summary>
-        void ClearFlags();
+        public string StringValue { get; private set; }
     }
 }

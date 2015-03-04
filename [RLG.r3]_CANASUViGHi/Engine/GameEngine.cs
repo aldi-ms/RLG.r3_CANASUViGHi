@@ -24,8 +24,8 @@ namespace RLG.R3_CANASUViGHi.Engine
     using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Framework;
     using RLG.R3_CANASUViGHi.GameData;
-    using RLG.R3_CANASUViGHi.Models;
-    using RLG.R3_CANASUViGHi.Interfaces;
+    using RLG.R3_CANASUViGHi.Entities;
+    using RLG.R3_CANASUViGHi.Contracts;
     using System.Text;
 
     /// <summary>

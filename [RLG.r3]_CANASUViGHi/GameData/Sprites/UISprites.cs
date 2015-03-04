@@ -16,28 +16,29 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.GameData.Sprites
 {
-    using RLG.R3_CANASUViGHi.Enums;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    /// Interface for the game sound system.
+    /// Load and keep all UI sprites / textures.
     /// </summary>
-    internal interface ISound
-    {  
+    internal sealed class UISprites
+    {
         /// <summary>
-        /// The object, source of the sound.
+        /// Initializes a new instance of the <see cref="UISprites" /> class.
+        /// Loads all UI related sprites.
         /// </summary>
-        ISoundSourceObject Source { get; }
+        /// <param name="content">MonoGame ContentManager.</param>
+        public UISprites(ContentManager content)
+        {
+            this.BagIcon = content.Load<Texture2D>("misc/bag");
+        }
 
         /// <summary>
-        /// Gets the Sound Type.
+        /// Gets sprite bag icon.
         /// </summary>
-        SoundType Type { get; }
-
-        /// <summary>
-        /// Gets the string representation of the sound.
-        /// </summary>
-        string StringValue { get; }
+        internal Texture2D BagIcon { get; private set; }
     }
 }

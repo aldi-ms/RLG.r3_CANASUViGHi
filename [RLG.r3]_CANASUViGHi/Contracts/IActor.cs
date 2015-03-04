@@ -16,7 +16,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Contracts
 {
     using Microsoft.Xna.Framework;
     using RLG.R3_CANASUViGHi.Enums;

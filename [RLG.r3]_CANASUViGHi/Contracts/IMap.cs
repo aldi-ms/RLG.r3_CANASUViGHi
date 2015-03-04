@@ -16,19 +16,28 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Contracts
 {
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using RLG.R3_CANASUViGHi.Contracts;
+    using RLG.R3_CANASUViGHi.Framework;
 
-    /// <summary>
-    /// Contains the Texture property, ensuring that this object
-    /// holds a Texture2D to be drawn on the screen.
-    /// </summary>
-    internal interface IDrawableObject : IGameObject
+     internal interface IMap<T>
+        where T : ITile
     {
-        /// <summary>
-        /// Gets the Texture2D of the Game Object.
-        /// </summary>
-        Texture2D Texture { get; }
+        FlatArray<T> Tiles { get; set; }
+
+        T this[int x, int y] { get; set; }
+
+        T this[Point index] { get; set; }
+
+        Point ViewBoxTileCount { get; set; }
+
+        void Draw(SpriteBatch spriteBatch, Point centre);
+
+        bool CheckTile(Point p, out string blocking);
+
+        ITile GetTileAtWindowCoordinates(Point position);
     }
 }

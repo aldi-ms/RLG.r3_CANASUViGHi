@@ -18,7 +18,7 @@
 
 namespace RLG.R3_CANASUViGHi.Framework
 {
-    using RLG.R3_CANASUViGHi.Interfaces;
+    using RLG.R3_CANASUViGHi.Contracts;
     using System;
     using System.Collections;
     using System.Collections.Generic;

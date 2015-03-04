@@ -16,14 +16,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Models
+namespace RLG.R3_CANASUViGHi.Entities
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using RLG.R3_CANASUViGHi.Enums;
     using RLG.R3_CANASUViGHi.Framework;
-    using RLG.R3_CANASUViGHi.Interfaces;
-    using RLG.R3_CANASUViGHi.Models;
+    using RLG.R3_CANASUViGHi.Contracts;
+    using RLG.R3_CANASUViGHi.Entities;
     using System;
 
     /// <summary>

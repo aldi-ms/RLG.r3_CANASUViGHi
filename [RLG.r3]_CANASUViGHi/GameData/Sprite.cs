@@ -58,6 +58,8 @@ namespace RLG.R3_CANASUViGHi.GameData
         /// </summary>
         internal static FringeSprites Fringe { get; private set; }
 
+        internal static UISprites UI { get; private set; }
+
         /// <summary>
         /// Static initializer for loading all sprites / textures.
         /// </summary>
@@ -87,6 +89,11 @@ namespace RLG.R3_CANASUViGHi.GameData
             if (Fringe == null)
             {
                 Fringe = new FringeSprites(content);
+            }
+
+            if (UI == null)
+            {
+                UI = new UISprites(content);
             }
         }
     }

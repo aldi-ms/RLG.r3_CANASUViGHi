@@ -16,17 +16,33 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Entities
 {
+    using Microsoft.Xna.Framework.Graphics;
+    using RLG.R3_CANASUViGHi.Contracts;
+    using RLG.R3_CANASUViGHi.Enums;
+
     /// <summary>
-    /// Interface for the sound system receiver object.
+    /// Base game Item class.
     /// </summary>
-    internal interface ISoundReceiver
+    internal class Item : GameObject, IItem
     {
         /// <summary>
-        /// Receive a ISound object and process it.
+        /// Initializes a new instance of the <see cref="Item" /> class.
         /// </summary>
-        /// <param name="sound">The sound to process.</param>
-        void ReceiveSound(ISound sound);
+        /// <param name="id">Item ID.</param>
+        /// <param name="name">Item name.</param>
+        /// <param name="flags">Item flags if any.</param>
+        /// <param name="texture">Item icon texture.</param>
+        public Item(int id, string name, Flags flags, Texture2D texture)
+            : base(id, name, flags)
+        {
+            this.Texture = texture;
+        }
+
+        /// <summary>
+        /// Gets the Texture2D item icon.
+        /// </summary>
+        public Texture2D Texture { get; private set; }
     }
 }

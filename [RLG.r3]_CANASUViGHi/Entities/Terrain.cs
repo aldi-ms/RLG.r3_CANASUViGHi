@@ -16,33 +16,41 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Models
+namespace RLG.R3_CANASUViGHi.Entities
 {
     using Microsoft.Xna.Framework.Graphics;
     using RLG.R3_CANASUViGHi.Enums;
-    using RLG.R3_CANASUViGHi.Interfaces;
+    using RLG.R3_CANASUViGHi.Contracts;
 
     /// <summary>
-    /// Fringe object.
+    /// Terrain object.
     /// </summary>
-    internal sealed class Fringe : GameObject, IFringe
+    internal sealed class Terrain : GameObject, ITerrain
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Fringe" /> class.
+        /// Initializes a new instance of the <see cref="Terrain" /> class.
         /// </summary>
-        /// <param name="id">The ID of the Fringe object.</param>
-        /// <param name="name">The name of the Fringe object.</param>
-        /// <param name="texture">The texture representing the Fringe object.</param>
-        /// <param name="flags">Fringe object flags.</param>
-        public Fringe(int id, string name, Texture2D texture, Flags flags)
+        /// <param name="id">The ID of the terrain.</param>
+        /// <param name="name">The name of the terrain.</param>
+        /// <param name="texture">The texture representing the terrain.</param>
+        /// <param name="flags">Terrain flags.</param>
+        /// <param name="movementCost">The cost for moving on this Terrain.</param>
+        public Terrain(int id, string name, Texture2D texture, Flags flags, int movementCost)
             : base(id, name, flags)
         {
             this.Texture = texture;
+            this.MovementCost = movementCost;
         }
-
+                
         /// <summary>
         /// Gets the Texture of the Terrain.
         /// </summary>
         public Texture2D Texture { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the cost for moving to a Tile with this Terrain.
+        /// </summary>
+        /// <remarks>Set to 0 for blocked terrain.</remarks>
+        public int MovementCost { get; set; }
     }
 }

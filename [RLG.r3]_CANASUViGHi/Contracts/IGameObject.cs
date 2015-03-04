@@ -16,39 +16,29 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Contracts
 {
-    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Input;
-    using RLG.R3_CANASUViGHi.Framework;
+    using RLG.R3_CANASUViGHi.Enums;
 
     /// <summary>
-    /// Interface for the Message Log, implementing ISoundReceiver as well.
+    /// Base interface for all drawable game elements.
     /// </summary>
-    internal interface IMessageLog : ISoundReceiver
+    internal interface IGameObject
     {
         /// <summary>
-        /// Gets or sets the color of the text in the log.
+        /// Gets the ID of the Game Object.
         /// </summary>
-        Color TextColor { get; set; }
+        int ID { get; }
 
         /// <summary>
-        /// Send a message to the log to be displayed.
+        /// Gets the Name of the Game Object.
         /// </summary>
-        /// <param name="text">String text message.</param>
-        /// <returns>Indicates whether the message was successfuly shown.</returns>
-        bool SendMessage(string text);
+        string Name { get; }
 
         /// <summary>
-        /// Draw the log on the screen.
+        /// Gets or sets the Flags of the Game Object.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch used to draw the log.</param>
-        void Draw(SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Clear the log.
-        /// </summary>
-        void ClearLog();
+        Flags Flags { get; set; }
     }
 }

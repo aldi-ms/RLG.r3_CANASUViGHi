@@ -16,29 +16,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Contracts
 {
-    using Microsoft.Xna.Framework.Graphics;
-    using RLG.R3_CANASUViGHi.Enums;
-
-    /// <summary>
-    /// Base interface for all drawable game elements.
-    /// </summary>
-    internal interface IGameObject
+    internal interface IFringe : IDrawableObject
     {
-        /// <summary>
-        /// Gets the ID of the Game Object.
-        /// </summary>
-        int ID { get; }
-
-        /// <summary>
-        /// Gets the Name of the Game Object.
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Gets or sets the Flags of the Game Object.
-        /// </summary>
-        Flags Flags { get; set; }
     }
 }

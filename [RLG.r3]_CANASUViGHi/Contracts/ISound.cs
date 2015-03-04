@@ -16,28 +16,28 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Contracts
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using RLG.R3_CANASUViGHi.Interfaces;
-    using RLG.R3_CANASUViGHi.Framework;
+    using RLG.R3_CANASUViGHi.Enums;
 
-    interface IMap<T>
-        where T : ITile
-    {
-        FlatArray<T> Tiles { get; set; }
+    /// <summary>
+    /// Interface for the game sound system.
+    /// </summary>
+    internal interface ISound
+    {  
+        /// <summary>
+        /// The object, source of the sound.
+        /// </summary>
+        ISoundSourceObject Source { get; }
 
-        T this[int x, int y] { get; set; }
+        /// <summary>
+        /// Gets the Sound Type.
+        /// </summary>
+        SoundType Type { get; }
 
-        T this[Point index] { get; set; }
-
-        Point ViewBoxTileCount { get; set; }
-
-        void Draw(SpriteBatch spriteBatch, Point centre);
-
-        bool CheckTile(Point p, out string blocking);
-
-        ITile GetTileAtWindowCoordinates(Point position);
+        /// <summary>
+        /// Gets the string representation of the sound.
+        /// </summary>
+        string StringValue { get; }
     }
 }

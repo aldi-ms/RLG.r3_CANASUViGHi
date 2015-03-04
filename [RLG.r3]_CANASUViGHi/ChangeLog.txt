@@ -3,13 +3,28 @@
 * * * * *
 
 * * *
+* 04.03.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
+
+* Renamed folder Interfaces/ to Contracts/ and Models/ to Entities/.
+
+* Started work on Item system. Created a base interface for all items
+ IItem.
+
+* Added interfaces/classes for work with Items - IItemContainer & 
+ IInventory.
+
+* Created class UISprites in Sprites/ to keep loaded misc user interface
+ sprites. Added a reference to the class in the static class Sprite.
+
+
+* * *
 * 28.02.2015	Aleksandar Dimitrov	<alexandar921@abv.bg>
 
 * Added class MouseHelp to update the mouse position / ButtonState
  and easily access them.
 
 * Added class Buffer<T> - a generic FIFO collection (First In, First
- Out) buffer implementation.
+ Out), buffer implementation.
 
 * KeyboardBuffer now implements Buffer<Keys> instead of itself defining
  a collection.

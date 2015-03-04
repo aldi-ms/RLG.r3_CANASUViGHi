@@ -16,19 +16,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * */
 
-namespace RLG.R3_CANASUViGHi.Interfaces
+namespace RLG.R3_CANASUViGHi.Contracts
 {
-    using RLG.R3_CANASUViGHi.Models;
-
     /// <summary>
-    /// Interface for Game Terrain.
+    /// Interface, base for all game items.
     /// </summary>
-    internal interface ITerrain : IDrawableObject
+    internal interface IItem : IDrawableObject
     {
-        /// <summary>
-        /// Gets or sets the cost for moving to a Tile with this Terrain.
-        /// </summary>
-        /// <remarks>Set to 0 for blocked terrain.</remarks>
-        int MovementCost { get; set; }
+
     }
 }
